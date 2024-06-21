@@ -2,27 +2,43 @@ import { Button } from '@nextui-org/react';
 import Link from 'next/link';
 import React from 'react';
 
+function calculateAge(birthDate: string) {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDiff = today.getMonth() - birthDateObj.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+        age--;
+    }
+    return age;
+}
+
 export default function About() {
+    const age = calculateAge('2007-06-29');
+
     return (
         <main className="min-h-screen">
             <div className="container py-12 px-6 mx-auto p-4">
                 <h1 className="text-4xl font-bold mb-6 text-center">About Me</h1>
                 <div className="max-w-4xl mx-auto">
                     <p className="text-lg mb-6 leading-relaxed">
-                        Hi there! I&apos;m Julian Oostwal, a passionate software engineer specializing in web development with a deep expertise in Next.js. As a freelance developer, I thrive on creating robust, scalable, and efficient web applications.
+                        Hi there! I&apos;m Julian Oostwal, a {age}-year-old passionate software engineer specializing in web development. As a freelance developer, I thrive on creating robust, scalable, and efficient web applications.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        My journey in software engineering started with a curiosity for how the web works and has evolved into a career focused on mastering modern technologies. I excel at building dynamic, high-performance websites and applications using the powerful capabilities of Next.js. Whether it&apos;s leveraging server-side rendering, optimizing static site generation, or harnessing the power of React for dynamic client-side rendering, I have a comprehensive understanding of the Next.js ecosystem.
-
+                        My journey in software engineering started with a curiosity for how the web works and has evolved into a career focused on mastering modern technologies. I excel at building high-performance websites and applications with a strong focus on user experience and responsiveness.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        On the frontend, I am skilled in creating intuitive and responsive user interfaces with React, Tailwind CSS, and other modern libraries and frameworks. I am also proficient in developing authentication systems, integrating third-party services, and working with databases like Supabase and Firebase to manage and store data efficiently.
+                        I am skilled in creating intuitive and responsive user interfaces using modern web technologies. I use tools like Supabase and Firebase for authentication and data management, integrating third-party services seamlessly.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        Beyond coding, I am a strong advocate for clean, maintainable code and best practices in software development. I enjoy working in collaborative environments, sharing knowledge, and continuously learning about new advancements in the tech industry.
+                        Beyond coding, I advocate for clean, maintainable code and best practices in software development. I enjoy working in collaborative environments, sharing knowledge, and continuously learning about new advancements in the tech industry.
+                    </p>
+
+                    <p className="text-lg mb-6 leading-relaxed">
+                        I am currently pursuing my education at Bit Academy, where I continue to expand my skills and knowledge in software development.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">

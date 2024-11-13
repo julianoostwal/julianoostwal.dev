@@ -16,7 +16,6 @@ function Page() {
 
         const { error }: { error: any } = await signIn(email, password);
 
-        setEmail('');
         setPassword('');
 
         if (error) {
@@ -47,7 +46,7 @@ function Page() {
 
                         <div>
                             <div className="mt-2">
-                                <Input onChange={(e) => setPassword(e.target.value)} id="password" name="password" type="password" autoComplete="current-password" required variant="bordered" label="Password" />
+                                <Input onChange={(e) => setPassword(e.target.value)} value={password} id="password" name="password" type="password" autoComplete="current-password" required variant="bordered" label="Password" />
                             </div>
                         </div>
 

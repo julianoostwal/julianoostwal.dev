@@ -18,7 +18,7 @@ const slugs = [
   "nextui",
   "shadcn",
   "railway",
-  "cypress",
+  // "cypress",
   "docker",
   "git",
   "github",

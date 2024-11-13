@@ -22,35 +22,35 @@ export default function About() {
                 <h1 className="text-4xl font-bold mb-6 text-center">About Me</h1>
                 <div className="max-w-4xl mx-auto">
                     <p className="text-lg mb-6 leading-relaxed">
-                        Hi there! I&apos;m Julian Oostwal, a {age}-year-old passionate software engineer specializing in web development. As a freelance developer, I thrive on creating robust, scalable, and efficient web applications.
+                        Hello! I&apos;m Julian Oostwal, a {age}-year-old software engineer specializing in web development. As a freelance developer, I&apos;m dedicated to building robust, scalable applications that prioritize efficiency and user experience.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        My journey in software engineering started with a curiosity for how the web works and has evolved into a career focused on mastering modern technologies. I excel at building high-performance websites and applications with a strong focus on user experience and responsiveness.
+                        My journey in tech began with a fascination for the web, evolving into a career focused on mastering modern tools and practices. I excel in creating high-performance websites with responsiveness at their core.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        I am skilled in creating intuitive and responsive user interfaces using modern web technologies. I use tools like Supabase and Firebase for authentication and data management, integrating third-party services seamlessly.
+                        Proficient in using technologies like Supabase and Firebase, I build applications with seamless integration of third-party services for authentication and data management, ensuring functionality meets an intuitive design.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        Beyond coding, I advocate for clean, maintainable code and best practices in software development. I enjoy working in collaborative environments, sharing knowledge, and continuously learning about new advancements in the tech industry.
+                        Committed to best practices, I write clean, maintainable code and love working collaboratively. I&apos;m continuously learning, embracing the latest tech advancements, and contributing my skills to each project.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        I am currently pursuing my education at Bit Academy, where I continue to expand my skills and knowledge in software development.
+                        Currently, I&apos;m pursuing my education at Bit Academy, where I continue to deepen my expertise in software development.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        As a freelancer, I provide my clients with top-notch web development services. If you are looking for a dedicated and skilled software engineer to help bring your project to life, I would love to hear from you. I am open to freelance projects that challenge me and allow me to grow professionally.
+                        As a freelancer, I&apos;m always excited to tackle new challenges. If you&apos;re seeking a dedicated developer to bring your project to life, let&apos;s connect. I&apos;m open to projects that push me to grow and deliver exceptional results.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        Feel free to reach out to me if you have any questions, need help with a project, or would like to discuss potential freelance opportunities. I&apos;m always open to new ideas and exciting projects!
+                        Let&apos;s discuss how I can help with your next project or idea—whether you have questions, need a project partner, or want to explore a freelance opportunity, I&apos;d love to chat!
                     </p>
 
                     <div className="text-center">
-                        <Button as={Link} href='/contact' size='lg'>Contact me!</Button>
+                        <Button as={Link} href='/contact' size='lg' variant='ghost' color='primary'>Contact me!</Button>
                     </div>
                 </div>
             </div>

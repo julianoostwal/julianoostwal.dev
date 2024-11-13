@@ -12,7 +12,8 @@ export default function Contact() {
     const [message, setMessage] = useState("");
     const [subject, setSubject] = useState("");
 
-    async function handleSubmit() {
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
         const { data, error } = await sendEmail("info@julianoostwal.dev", { email: "noreply@julianoostwal.dev", name: "Julian Oostwal" }, subject || "Bericht van website julianoostwal.dev", { email, name, message });
 
         if (error) {
@@ -34,7 +35,7 @@ export default function Contact() {
     return (
         <main className="min-h-screen flex justify-center items-center p-4">
             <motion.section
-                className="text-center max-w-xl mx-auto -mt-48"
+                className="text-center max-w-xl mx-auto -mt-16"
                 initial={{
                     opacity: 0,
                 }}
@@ -57,7 +58,7 @@ export default function Contact() {
                     or through this form.
                 </p>
 
-                <form className="mt-6 flex flex-col" action={handleSubmit}>
+                <form className="mt-6 flex flex-col" onSubmit={handleSubmit}>
                     <Input
                         label="Full name"
                         type="text"

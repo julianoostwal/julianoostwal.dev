@@ -14,6 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
     title: "Julian Oostwal | Front-End Developer Portfolio",
     description: "Discover the portfolio of Julian Oostwal, a skilled front-end developer specializing in modern web development. Explore projects showcasing expertise in building responsive, high-performance applications using Next.js, and Tailwind CSS. Let's connect to bring your digital ideas to life.",
+    keywords: "Julian Oostwal, Front-End Developer, Portfolio, Web Development, Next.js, Tailwind CSS",
 };
 
 export default function RootLayout({
@@ -29,9 +30,9 @@ export default function RootLayout({
                         <AuthContextProvider>
                             <Navbar />
                             {children}
+                            <SpeedInsights />
                             <Footer />
                             <Toaster />
-                            <SpeedInsights />
                         </AuthContextProvider>
                     </Providers>
                 </ThemeProvider>

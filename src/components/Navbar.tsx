@@ -60,7 +60,7 @@ export default function Navbar() {
                             <Link href="/contact" className={`block py-2 px-3 rounded ${pathname === '/contact' ? 'md:bg-transparent bg-blue-700 max-md:text-white md:p-0 underline underline-offset-4 decoration-4' : 'hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`} aria-current={pathname === '/contact' ? 'page' : undefined}>Contact</Link>
                         </li>
                         <li>
-                        <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="block py-2 px-3 md:p-1 w-full rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+                        <button type="button" aria-label="Toggle Theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="block py-2 px-3 md:p-1 w-full rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
                             {theme === 'dark' ? (
                                 <FaMoon/>
                             ) : (

@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="min-h-screen flex justify-center items-center">
       <div className="container">
-        <div className="flex flex-wrap gap-4 justify-center items-center -mt-16">
+        <div className="flex flex-wrap gap-6 justify-evenly items-center -mt-16">
           <div className="max-w-2xl gap-2 flex flex-col">
               <h1 className="text-2xl font-bold">Hi, I&apos;m Julian Oostwal</h1>
               <p>

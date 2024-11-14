@@ -13,7 +13,7 @@ export default function Home() {
                 I&apos;m a frontend developer with a passion for building seamless, user-focused web experiences. Leveraging Next.js, React, and a range of modern web technologies, I bring designs to life with clean, efficient code.
               </p>
               <p>
-              Driven by innovation and the pursuit of mastery, I continuously explore new tools and frameworks to stay at the forefront of frontend development.
+                Driven by innovation and the pursuit of mastery, I continuously explore new tools and frameworks to stay at the forefront of frontend development.
               </p>
             <div className="flex flex-wrap gap-4 mt-4">
               <Button color="secondary" radius="full" href="/projects" as={Link}>View my work</Button>

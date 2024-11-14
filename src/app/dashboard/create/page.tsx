@@ -7,14 +7,13 @@ export default function Create() {
 
     async function formSubmit(formData: FormData) {
         "use server"
-        // Get the form values
+
         const title = formData.get("title") as string;
         const description = formData.get("description") as string;
         const url = formData.get("url") as string;
         const imageInput = formData.get("image") as unknown as HTMLInputElement;
         const image = imageInput?.files?.[0];
 
-        // Create a new document in Firestore
         const db = getFirestore(firebase_app);
         const projectsCollection = collection(db, "projects");
         const newProject = {

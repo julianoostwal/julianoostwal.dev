@@ -22,35 +22,23 @@ export default function About() {
                 <h1 className="text-4xl font-bold mb-6 text-center">About Me</h1>
                 <div className="max-w-4xl mx-auto">
                     <p className="text-lg mb-6 leading-relaxed">
-                        Hello! I&apos;m Julian Oostwal, a {age}-year-old software engineer specializing in web development. As a freelance developer, I&apos;m dedicated to building robust, scalable applications that prioritize efficiency and user experience.
+                        I&apos;m Julian Oostwal, a {age}-year-old front-end developer committed to creating efficient, high-quality digital solutions that prioritize user experience. With a solid foundation in modern web technologies, I specialize in building responsive applications that seamlessly integrate design and functionality, ensuring optimal performance across devices.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        My journey in tech began with a fascination for the web, evolving into a career focused on mastering modern tools and practices. I excel in creating high-performance websites with responsiveness at their core.
+                        My approach to development is grounded in best practices and a drive for continuous improvement. I prioritize clean, maintainable code and adhere to industry standards, making sure each project aligns with modern development trends. By balancing technical rigor with an attention to detail, I aim to deliver applications that are both robust and easy to use, reflecting my commitment to delivering professional results.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        Proficient in using technologies like Supabase and Firebase, I build applications with seamless integration of third-party services for authentication and data management, ensuring functionality meets an intuitive design.
+                        Currently advancing my technical expertise at Bit Academy, I also collaborate on freelance projects, applying a detail-oriented and results-driven approach. My academic and freelance experiences allow me to stay current with evolving web standards and client expectations, enabling me to build effective, scalable solutions that cater to a wide range of digital needs.
                     </p>
 
                     <p className="text-lg mb-6 leading-relaxed">
-                        Committed to best practices, I write clean, maintainable code and love working collaboratively. I&apos;m continuously learning, embracing the latest tech advancements, and contributing my skills to each project.
-                    </p>
-
-                    <p className="text-lg mb-6 leading-relaxed">
-                        Currently, I&apos;m pursuing my education at Bit Academy, where I continue to deepen my expertise in software development.
-                    </p>
-
-                    <p className="text-lg mb-6 leading-relaxed">
-                        As a freelancer, I&apos;m always excited to tackle new challenges. If you&apos;re seeking a dedicated developer to bring your project to life, let&apos;s connect. I&apos;m open to projects that push me to grow and deliver exceptional results.
-                    </p>
-
-                    <p className="text-lg mb-6 leading-relaxed">
-                        Let&apos;s discuss how I can help with your next project or idea—whether you have questions, need a project partner, or want to explore a freelance opportunity, I&apos;d love to chat!
+                        If you&apos;re seeking a front-end developer dedicated to bringing reliable, effective solutions to life, feel free to reach out. I&apos;m open to new projects and eager to contribute my skills to innovative digital experiences. Let&apos;s connect to discuss how I can support your next project.
                     </p>
 
                     <div className="text-center">
-                        <Button as={Link} href='/contact' size='lg' variant='ghost' color='primary'>Contact me!</Button>
+                        <Button as={Link} href='/contact' size='lg' variant='ghost' color='primary'>Contact me</Button>
                     </div>
                 </div>
             </div>

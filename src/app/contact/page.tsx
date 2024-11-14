@@ -21,9 +21,12 @@ export default function Contact() {
                 style: {
                     background: "red",
                 },
+                duration: 5000,
             });
         } else {
-            toast.success("Email sent successfully!");
+            toast.success("Email sent successfully!", {
+                duration: 5000,
+            });
             setEmail("");
             setName("");
             setMessage("");

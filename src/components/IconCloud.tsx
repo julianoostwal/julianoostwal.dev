@@ -24,6 +24,7 @@ const slugs = [
   "gitlab",
   "visualstudiocode",
   "express",
+  "framer"
 ];
 
 export default function IconCloudComponent() {

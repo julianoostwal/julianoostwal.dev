@@ -31,6 +31,13 @@ export default function Navbar() {
             },
         }
     };
+
+    const menuItems = [
+        { name: 'Home', url: '/' },
+        { name: 'About', url: '/about' },
+        { name: 'Projects', url: '/projects' },
+        { name: 'Contact', url: '/contact' }
+    ];
     
     return (
         <nav className="backdrop-blur-lg sticky top-0 z-20">
@@ -47,23 +54,18 @@ export default function Navbar() {
                 </button>
                 <motion.div className={`w-full md:block md:w-auto ${isMenuOpen ? '' : 'max-md:hidden'} max-md:opacity-0`} variants={menuVariants} initial={false} animate={isMenuOpen && "open"}>
                     <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 dark:border-gray-700 gap-1">
+                        {menuItems.map((item) => (
+                            <li key={item.url}>
+                                <Link href={item.url} className={`block py-2 px-3 rounded ${pathname === item.url ? 'md:bg-transparent bg-blue-700 max-md:text-white md:p-0 underline underline-offset-4 decoration-4' : 'hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`} aria-current={pathname === item.url ? 'page' : undefined}>
+                                    {item.name}
+                                </Link>
+                            </li>
+                        ))}
                         <li>
-                            <Link href="/" className={`block py-2 px-3 rounded ${pathname === '/' ? 'md:bg-transparent bg-blue-700 max-md:text-white md:p-0 underline underline-offset-4 decoration-4' : 'hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`} aria-current={pathname === '/' ? 'page' : undefined}>Home</Link>
-                        </li>
-                        <li>
-                            <Link href="/about" className={`block py-2 px-3 rounded ${pathname === '/about' ? 'md:bg-transparent bg-blue-700 max-md:text-white md:p-0 underline underline-offset-4 decoration-4' : 'hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`} aria-current={pathname === '/about' ? 'page' : undefined}>About</Link>
-                        </li>
-                        <li>
-                            <Link href="/projects" className={`block py-2 px-3 rounded ${pathname === '/projects' ? 'md:bg-transparent bg-blue-700 max-md:text-white md:p-0 underline underline-offset-4 decoration-4' : 'hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`} aria-current={pathname === '/projects' ? 'page' : undefined}>Projects</Link>
-                        </li>
-                        <li>
-                            <Link href="/contact" className={`block py-2 px-3 rounded ${pathname === '/contact' ? 'md:bg-transparent bg-blue-700 max-md:text-white md:p-0 underline underline-offset-4 decoration-4' : 'hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'}`} aria-current={pathname === '/contact' ? 'page' : undefined}>Contact</Link>
-                        </li>
-                        <li>
-                        <button type="button" aria-label="Toggle Theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="block py-2 px-3 md:p-1 w-full rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
-                            <FaMoon className='hidden dark:block'/>
-                            <IoSunny className='block dark:hidden'/>
-                        </button>
+                            <button type="button" aria-label="Toggle Theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="block py-2 px-3 md:p-1 w-full rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+                                <FaMoon className='hidden dark:block'/>
+                                <IoSunny className='block dark:hidden'/>
+                            </button>
                         </li>
                     </ul>
                 </motion.div>

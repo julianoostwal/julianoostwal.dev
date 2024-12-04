@@ -18,12 +18,12 @@ const slugs = [
   "nextui",
   "shadcn",
   "railway",
-  // "cypress",
   "docker",
   "git",
   "github",
   "gitlab",
   "visualstudiocode",
+  "express",
 ];
 
 export default function IconCloudComponent() {

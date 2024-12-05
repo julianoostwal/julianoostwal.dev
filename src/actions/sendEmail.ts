@@ -20,7 +20,7 @@ async function sendEmail(to: string, from: { email: string, name: string }, subj
                 <head>
                 <meta charset="utf-8">
                 <title>julianoostwal.dev</title>
-                <meta name="description" content="melmanbv.nl">
+                <meta name="description" content="julianoostwal.dev">
                 <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />            
                 <style>
                     body {

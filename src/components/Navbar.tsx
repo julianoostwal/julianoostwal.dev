@@ -63,8 +63,8 @@ export default function Navbar() {
                         ))}
                         <li>
                             <button type="button" aria-label="Toggle Theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="block py-2 px-3 md:p-1 w-full rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
-                                <FaMoon className='hidden dark:block'/>
-                                <IoSunny className='block dark:hidden'/>
+                                <FaMoon className='block dark:hidden'/>
+                                <IoSunny className='hidden dark:block'/>
                             </button>
                         </li>
                     </ul>

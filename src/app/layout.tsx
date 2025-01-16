@@ -8,6 +8,7 @@ import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,11 @@ export default function RootLayout({
                             <Navbar />
                             {children}
                             <SpeedInsights />
+                            <Script
+                                async
+                                src="http://umami-ncgo8gckogwk44s88w4c4k4g.5.253.247.243.sslip.io/script.js"
+                                data-website-id="0e12f506-64b9-4324-99a0-9dd22e5d86d3"
+                            />
                             <Footer />
                             <Toaster />
                         </AuthContextProvider>

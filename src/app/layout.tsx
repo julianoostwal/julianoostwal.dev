@@ -35,7 +35,7 @@ export default function RootLayout({
                             <Script
                                 async
                                 src="http://umami-ncgo8gckogwk44s88w4c4k4g.5.253.247.243.sslip.io/script.js"
-                                data-website-id="0e12f506-64b9-4324-99a0-9dd22e5d86d3"
+                                data-website-id="9c488735-d3be-46e5-b712-ec4ce7bf9c89"
                             />
                             <Footer />
                             <Toaster />

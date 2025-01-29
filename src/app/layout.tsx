@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AuthContextProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import { Providers } from "@/components/providers";
@@ -28,18 +27,16 @@ export default function RootLayout({
             <body className={inter.className}>
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
                     <Providers>
-                        <AuthContextProvider>
                             <Navbar />
                             {children}
                             <SpeedInsights />
                             <Script
                                 async
-                                src="http://umami-ncgo8gckogwk44s88w4c4k4g.5.253.247.243.sslip.io/script.js"
-                                data-website-id="9c488735-d3be-46e5-b712-ec4ce7bf9c89"
+                                src="https://stats.quixly.xyz/script.js"
+                                data-website-id="6ab77a9a-cb30-4cc1-b406-3e154e389194"
                             />
                             <Footer />
                             <Toaster />
-                        </AuthContextProvider>
                     </Providers>
                 </ThemeProvider>
             </body>

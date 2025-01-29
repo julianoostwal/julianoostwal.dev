@@ -4,9 +4,9 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'firebasestorage.googleapis.com',
+            hostname: 'minio-sss8o88ck0o0ckggo4ogs48w.5.253.247.243.sslip.io',
             port: '',
-            pathname: '/v0/b/julianoostwal-c3a80.appspot.com/**',
+            pathname: '/**',
           },
         ],
       },

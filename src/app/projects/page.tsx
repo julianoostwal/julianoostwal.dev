@@ -2,7 +2,7 @@ import NextImage from "next/image";
 import { MotionDiv } from "@/lib/framer-motion-div";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import Link from "next/link";
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image } from "@heroui/react";
 
 interface Project {
     title: string;

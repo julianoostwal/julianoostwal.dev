@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss"
-import { nextui } from "@heroui/react";
+import { heroui } from "@heroui/react";
 
 const config = {
   darkMode: ["class"],

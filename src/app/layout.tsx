@@ -6,7 +6,6 @@ import Navbar from "@/components/Navbar";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/Footer";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,7 +28,6 @@ export default function RootLayout({
                     <Providers>
                             <Navbar />
                             {children}
-                            <SpeedInsights />
                             <Script
                                 async
                                 src="https://stats.quixly.xyz/script.js"

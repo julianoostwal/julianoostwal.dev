@@ -44,7 +44,8 @@ export default async function Projects() {
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{project.title}</h5>
                             {project.imageUrl && <Image src={project.imageUrl} as={NextImage} alt="Project image" className="w-full object-contain rounded-lg" height={220} width={500}/>}
                             {project.description && <p className="font-normal text-gray-700 dark:text-gray-400">{project.description}</p>}
-                            {project.liveUrl && <Button className="bg-blue-600 mt-3" as={Link} href={project.liveUrl} endContent={<IoIosArrowRoundForward className="ms-2" size={26} />}>View project</Button>}
+                            {project.liveUrl && <Button className="bg-blue-600 mt-3text-white" as={Link} href={project.liveUrl} endContent={<IoIosArrowRoundForward className="ms-2" size={26} />}>View project</Button>}
+                            {/* {project.githubUrl && <Button className="bg-gray-600 mt-3 text-white" as={Link} href={project.githubUrl} endContent={<IoIosArrowRoundForward className="ms-2" size={26} />}>View source</Button>} */}
                         </MotionDiv>
                     ))}
                 </div>

@@ -33,7 +33,7 @@ export default function RootLayout({
                             <Script
                                 async
                                 src="https://stats.quixly.xyz/script.js"
-                                data-website-id="6ab77a9a-cb30-4cc1-b406-3e154e389194"
+                                data-website-id="d31f6458-d505-4e13-b2df-3c68c6f33566"
                             />
                             <Footer />
                             <Toaster />

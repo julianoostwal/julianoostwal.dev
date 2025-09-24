@@ -41,7 +41,7 @@ async function sendEmail(
         }
 
         const sentFrom = new Sender(from.email, from.name);
-        const recipients = [new Recipient(to, "Recipient")];
+        const recipients = [new Recipient(to)];
 
         const emailParams = new EmailParams()
             .setFrom(sentFrom)

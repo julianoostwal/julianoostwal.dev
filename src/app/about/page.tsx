@@ -1,6 +1,5 @@
-import { Button } from '@heroui/react';
-import Link from 'next/link';
-import React from 'react';
+import { Button } from '@heroui/button';
+import { Link } from '@heroui/link';
 
 function calculateAge(birthDate: string) {
     const today = new Date();

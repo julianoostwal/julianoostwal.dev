@@ -1,8 +1,22 @@
 import NextImage from "next/image";
 import { MotionDiv } from "@/lib/framer-motion-div";
 import { IoIosArrowRoundForward } from "react-icons/io";
-import Link from "next/link";
-import { Button, Image } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Image } from "@heroui/image";
+import { Link } from "@heroui/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    robots: {
+        index: false,
+        follow: true,
+        nocache: true,
+        googleBot: {
+            index: false,
+            follow: false,
+        },
+    },
+};
 
 interface Project {
     title: string;
@@ -39,7 +53,7 @@ export default async function Projects() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.5 }}
-                            className="max-w mx-3 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                            className="max-w m-3 p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
                         >
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{project.title}</h5>
                             {project.imageUrl && <Image src={project.imageUrl} as={NextImage} alt="Project image" className="w-full object-contain rounded-lg" height={220} width={500}/>}

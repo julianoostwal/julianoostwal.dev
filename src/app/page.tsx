@@ -1,6 +1,6 @@
 import IconCloud from "@/components/IconCloud";
-import { Button } from "@heroui/react";
-import Link from "next/link";
+import { Button } from "@heroui/button";
+import { Link } from "@heroui/link";
 
 export default function Home() {
   return (
@@ -18,12 +18,13 @@ export default function Home() {
             <div className="flex flex-wrap gap-4 mt-4">
               <Button color="secondary" radius="full" href="/projects" as={Link}>View my work</Button>
               <Button color="primary" href="/contact" as={Link}>Contact Me</Button>
-              <Button as={Link}
+              <Button
                 color="default"
                 radius="full"
                 href="https://github.com/julianoostwal"
                 target="_blank"
                 rel="noopener noreferrer"
+                as={Link}
               >
                 GitHub
               </Button>

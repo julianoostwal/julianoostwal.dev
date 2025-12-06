@@ -4,7 +4,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { sendEmail } from "@/actions/sendEmail";
 import { toast } from "sonner";
-import { Input, Textarea, Button } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Input, Textarea } from "@heroui/input";
 
 export default function Contact() {
     const [email, setEmail] = useState("");

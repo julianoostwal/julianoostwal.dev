@@ -17,11 +17,11 @@ const BUCKET_NAME = process.env.S3_BUCKET || "portfolio";
 export const s3Client =
   globalForS3.s3Client ??
   new S3Client({
-    endpoint: process.env.S3_ENDPOINT || "http://localhost:8333",
-    region: process.env.S3_REGION || "us-east-1",
+    endpoint: process.env.S3_ENDPOINT!,
+    region: process.env.S3_REGION !,
     credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY || "",
-      secretAccessKey: process.env.S3_SECRET_KEY || "",
+      accessKeyId: process.env.S3_ACCESS_KEY!,
+      secretAccessKey: process.env.S3_SECRET_KEY!,
     },
     forcePathStyle: true,
   });
@@ -83,8 +83,7 @@ export async function uploadFile(
   );
 
   // Return the public URL
-  const publicUrl =
-    process.env.S3_PUBLIC_URL || process.env.S3_ENDPOINT || "";
+  const publicUrl = process.env.S3_ENDPOINT!;
 
   return `${publicUrl}/${BUCKET_NAME}/${objectKey}`;
 }
@@ -131,8 +130,7 @@ export async function getPresignedUploadUrl(
 }
 
 export async function getPublicUrl(objectKey: string): Promise<string> {
-  const publicUrl =
-    process.env.S3_PUBLIC_URL || process.env.S3_ENDPOINT || "";
+  const publicUrl = process.env.S3_ENDPOINT!;
   return `${publicUrl}/${BUCKET_NAME}/${objectKey}`;
 }
 

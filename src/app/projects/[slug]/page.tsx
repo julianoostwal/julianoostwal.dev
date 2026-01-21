@@ -97,7 +97,7 @@ export default async function ProjectPage({ params }: PageProps) {
             Back to Projects
           </ButtonLink>
 
-          <article className="max-w-4xl mx-auto">
+          <article>
             {/* Header */}
             <header className="mb-8">
               <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
@@ -138,7 +138,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
             {/* Image */}
             {project.imageUrl && (
-              <div className="relative w-full aspect-video mb-8 rounded-xl overflow-hidden">
+              <div className="relative w-full aspect-video mb-8 rounded-xl overflow-hidden max-w-4xl">
                 <Image
                   src={project.imageUrl}
                   alt={project.title}

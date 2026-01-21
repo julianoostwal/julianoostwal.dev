@@ -129,7 +129,7 @@ export default function ProjectsTable({ projects }: ProjectsTableProps) {
                       )}
                       <div>
                         <p className="font-medium text-gray-900 dark:text-white">{project.title}</p>
-                        <p className="text-sm text-gray-500">/{project.slug}</p>
+                        <p className="text-sm text-gray-500">/{project.slug || project.id}</p>
                       </div>
                     </div>
                   </td>

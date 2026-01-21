@@ -51,7 +51,7 @@ export default async function Projects() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="group"
               >
-                <article className="h-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                <article className="h-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col">
                   {/* Image */}
                   {project.imageUrl && (
                     <div className="relative aspect-video overflow-hidden">
@@ -71,7 +71,7 @@ export default async function Projects() {
                     </div>
                   )}
 
-                  <div className="p-6">
+                  <div className="p-6 flex flex-col flex-1">
                     {/* Title */}
                     <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                       {project.title}
@@ -100,10 +100,12 @@ export default async function Projects() {
                       </p>
                     )}
 
+                    <div className="flex-1" />
+
                     {/* Actions */}
-                    <div className="flex gap-2 mt-auto">
+                    <div className="flex gap-2">
                       <ButtonLink
-                        href={`/projects/${project.slug}`}
+                        href={`/projects/${project.slug || project.id}`}
                         size="sm"
                         variant="flat"
                         color="primary"

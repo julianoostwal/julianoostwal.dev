@@ -16,9 +16,12 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [urlInput, setUrlInput] = useState("");
+  const [showRenameDialog, setShowRenameDialog] = useState(false);
+  const [customFileName, setCustomFileName] = useState("");
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -35,10 +38,29 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
       return;
     }
 
+    // Get filename without extension for renaming
+    const nameWithoutExt = file.name.replace(/\.[^.]+$/, "");
+    setCustomFileName(nameWithoutExt);
+    setPendingFile(file);
+    setShowRenameDialog(true);
+  }
+
+  async function handleUpload() {
+    if (!pendingFile) return;
+
     setUploading(true);
+    setShowRenameDialog(false);
+    
     try {
+      // Get extension from original file
+      const ext = pendingFile.name.split(".").pop() || "";
+      const finalFileName = customFileName ? `${customFileName}.${ext}` : pendingFile.name;
+      
+      // Create a new file with the custom name
+      const renamedFile = new File([pendingFile], finalFileName, { type: pendingFile.type });
+      
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", renamedFile);
 
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -58,6 +80,17 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
       toast.error(error instanceof Error ? error.message : "Upload failed");
     } finally {
       setUploading(false);
+      setPendingFile(null);
+      setCustomFileName("");
+    }
+  }
+
+  function cancelUpload() {
+    setShowRenameDialog(false);
+    setPendingFile(null);
+    setCustomFileName("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   }
 
@@ -110,9 +143,48 @@ export default function ImageUpload({ value, onChange }: ImageUploadProps) {
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        onChange={handleFileChange}
+        onChange={handleFileSelect}
         className="hidden"
       />
+
+      {/* Rename Dialog */}
+      {showRenameDialog && (
+        <div className="p-4 border border-border rounded-lg bg-card space-y-3">
+          <p className="text-sm font-medium">Rename file before upload:</p>
+          <div className="flex gap-2 items-center">
+            <Input
+              size="sm"
+              placeholder="filename"
+              value={customFileName}
+              onChange={(e) => setCustomFileName(e.target.value)}
+              variant="bordered"
+              className="flex-1"
+            />
+            <span className="text-muted-foreground text-sm">
+              .{pendingFile?.name.split(".").pop()}
+            </span>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              size="sm"
+              color="primary"
+              onClick={handleUpload}
+              isLoading={uploading}
+            >
+              Upload
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="bordered"
+              onClick={cancelUpload}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      )}
 
       <div className="flex gap-2">
         <Button

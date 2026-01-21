@@ -2,7 +2,7 @@
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
 const mailerSend = new MailerSend({
-    apiKey: process.env.MAILERSEND_API_KEY || "",
+    apiKey: process.env.MAILERSEND_API_KEY!,
 });
 
 interface EmailData {

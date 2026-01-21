@@ -1,0 +1,91 @@
+// Prisma Schema for Julian Oostwal Portfolio
+// Database: PostgreSQL
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  username     String   @unique
+  passwordHash String   @map("password_hash")
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  sessions     Session[]
+  projects     Project[]
+
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  token        String   @unique
+  refreshToken String   @unique @map("refresh_token")
+  expiresAt    DateTime @map("expires_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+  userAgent    String?  @map("user_agent")
+  ipAddress    String?  @map("ip_address")
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([refreshToken])
+  @@map("sessions")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String?  @unique
+  description String?  @db.Text
+  content     String?  @db.Text
+  imageUrl    String?  @map("image_url")
+  liveUrl     String?  @map("live_url")
+  githubUrl   String?  @map("github_url")
+  technologies String[] @default([])
+  featured    Boolean  @default(false)
+  published   Boolean  @default(false)
+  noIndex     Boolean  @default(false) @map("no_index")
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  authorId    String   @map("author_id")
+
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([slug])
+  @@index([published])
+  @@index([featured])
+  @@map("projects")
+}
+
+model SiteSettings {
+  id          String   @id @default("default")
+  siteName    String   @default("Julian Oostwal") @map("site_name")
+  siteDescription String? @map("site_description") @db.Text
+  heroTitle   String?  @map("hero_title")
+  heroSubtitle String? @map("hero_subtitle") @db.Text
+  aboutContent String? @map("about_content") @db.Text
+  contactEmail String? @map("contact_email")
+  socialLinks  Json?   @map("social_links")
+  seoKeywords  String[] @default([]) @map("seo_keywords")
+  technologySlugs String[] @default([]) @map("technology_slugs")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
+}

@@ -1,112 +1,32 @@
-"use client";
+import { prisma } from "@/lib/db/prisma";
+import { notFound } from "next/navigation";
+import ContactForm from "@/components/ContactForm";
+import type { Metadata } from "next";
+import { generateSiteMetadata } from "@/lib/seo";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { sendEmail } from "@/actions/sendEmail";
-import { toast } from "sonner";
-import { Button } from "@heroui/button";
-import { Input, Textarea } from "@heroui/input";
+// Revalidate every 60 seconds
+export const revalidate = 60;
 
-export default function Contact() {
-    const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
-    const [message, setMessage] = useState("");
-    const [subject, setSubject] = useState("");
+export async function generateMetadata(): Promise<Metadata> {
+  return generateSiteMetadata({
+    title: "Contact",
+    pathname: "/contact",
+  });
+}
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        const { data, error } = await sendEmail("info@julianoostwal.dev", { email: "noreply@julianoostwal.dev", name: "Julian Oostwal" }, subject || "Bericht van website julianoostwal.dev", { email, name, message });
+export default async function ContactPage() {
+  const settings = await prisma.siteSettings.findUnique({
+    where: { id: "default" },
+    select: { contactEmail: true },
+  });
 
-        if (error) {
-            return toast.error(error, {
-                style: {
-                    background: "red",
-                },
-                duration: 5000,
-            });
-        } else {
-            toast.success("Email sent successfully!", {
-                duration: 5000,
-            });
-            setEmail("");
-            setName("");
-            setMessage("");
-            setSubject("");
-        }
+  if (!settings?.contactEmail) {
+    notFound();
+  }
 
-    }
-
-    return (
-        <main className="min-h-screen flex justify-center items-center p-4">
-            <motion.section
-                className="text-center max-w-xl mx-auto -mt-16"
-                initial={{
-                    opacity: 0,
-                }}
-                whileInView={{
-                    opacity: 1,
-                }}
-                transition={{
-                    duration: 0.3,
-                }}
-                viewport={{
-                    once: true,
-                }}>
-                <h1 className="text-3xl">Contact me</h1>
-
-                <p className="mt-4">
-                    Please contact me directly at{" "}
-                    <a className="underline" href="mailto:info@julianoostwal.dev">
-                        info@julianoostwal.dev
-                    </a>{" "}
-                    or through this form.
-                </p>
-
-                <form className="mt-6 flex flex-col" onSubmit={handleSubmit}>
-                    <Input
-                        label="Full name"
-                        type="text"
-                        variant="underlined"
-                        onChange={(e) => setName(e.target.value)}
-                        value={name}
-                        isRequired
-                        className="mt-4"
-                    />
-
-                    <Input
-                        label="Email address"
-                        type="email"
-                        variant="underlined"
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
-                        isRequired
-                        className="mt-4"
-                    />
-
-                    <Input
-                        label="Subject"
-                        type="text"
-                        variant="underlined"
-                        onChange={(e) => setSubject(e.target.value)}
-                        value={subject}
-                        className="mt-4"
-                    />
-
-                    <Textarea
-                        label="Message"
-                        placeholder="Enter your message"
-                        variant="underlined"
-                        onChange={(e) => setMessage(e.target.value)}
-                        value={message}
-                        className="mt-4"
-                        isRequired
-                    />
-
-                    <Button type="submit" variant="bordered" color="success" className="mt-8">
-                        Send message
-                    </Button>
-                </form>
-            </motion.section>
-        </main>
-    );
+  return (
+    <main className="min-h-screen flex justify-center items-center p-4">
+      <ContactForm contactEmail={settings.contactEmail} />
+    </main>
+  );
 }

@@ -1,28 +1,115 @@
-# julianoostwal.dev
+# Julian Oostwal Portfolio
 
-Welkom bij de repository van mijn persoonlijke portfolio, **julianoostwal.dev**! Deze website toont mijn werk, vaardigheden en projecten als frontend ontwikkelaar, met een focus op Next.js, React en moderne webtechnologieën.
+A modern, full-stack portfolio website built with Next.js 16, featuring an admin panel, custom authentication, and cloud storage integration.
+
+## ✨ Features
+
+- 🎨 **Modern UI** - Built with HeroUI and Tailwind CSS
+- 🔐 **Custom Auth** - JWT-based authentication with refresh tokens
+- 📊 **Admin Panel** - Full CMS for managing projects, and settings
+- 📦 **Database** - PostgreSQL with Prisma ORM
+- 🗄️ **File Storage** - SeaweedFS (S3-compatible) for image uploads
+- 🔍 **SEO Optimized** - Sitemap, robots.txt, structured data, Open Graph
+- 📱 **Responsive** - Mobile-first design
+- ⚡ **Performance** - Turbopack, optimized images, lazy loading
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4 + HeroUI
+- **Database**: PostgreSQL + Prisma
+- **Auth**: JWT (jose) + bcryptjs
+- **Storage**: SeaweedFS
+- **Animations**: Framer Motion
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- pnpm 10+
+- PostgreSQL database
+- SeaweedFS S3 storage (https://github.com/seaweedfs/seaweedfs)
+
+### Setup
+
+1. **Clone and install dependencies**
+   ```bash
+   git clone https://github.com/julianoostwal/julianoostwal.dev.git
+   cd julianoostwal.dev
+   pnpm install
+   ```
+
+2. **Configure environment**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your database and S3 credentials
+   ```
+
+3. **Setup database**
+   ```bash
+   pnpm db:push    # Push schema to database
+   pnpm db:seed    # Seed with initial data
+   ```
+
+4. **Start development server**
+   ```bash
+   pnpm dev
+   ```
+
+5. **Access the app**
+   - Website: http://localhost:3000
+   - Admin: http://localhost:3000/admin
+
+### Default Admin Credentials
+
+After seeding the database:
+- **Email**: admin@julianoostwal.dev
+- **Password**: Admin123!
+
+⚠️ **Change these credentials immediately after first login!**
+
+## 📜 Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server with Turbopack |
+| `pnpm build` | Build for production |
+| `pnpm start` | Start production server |
+| `pnpm lint` | Run ESLint |
+| `pnpm db:push` | Push Prisma schema to database |
+| `pnpm db:migrate` | Create and run migrations |
+| `pnpm db:seed` | Seed the database |
+| `pnpm db:studio` | Open Prisma Studio |
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── admin/           # Admin panel pages
+│   ├── api/             # API routes
+│   │   ├── auth/        # Authentication endpoints
+│   │   ├── projects/    # Projects CRUD
+│   │   ├── settings/    # Site settings
+│   │   └── upload/      # File uploads
+│   ├── about/           # About page
+│   ├── contact/         # Contact page
+│   └── projects/        # Projects page
+├── components/
+│   ├── admin/           # Admin components
+│   └── ui/              # Shared UI components
+└── lib/
+    ├── auth/            # Authentication utilities
+    ├── db/              # Database client
+    ├── storage/         # S3 client (SeaweedFS)
+    └── seo.ts           # SEO utilities
+```
 
 ## 🌐 Live Website
 [**julianoostwal.dev**](https://julianoostwal.dev)
 
----
+## 📄 License
 
-## 🚀 Over de Website
-Deze website is ontworpen om mijn professionele profiel te presenteren en biedt bezoekers de mogelijkheid om:
-- Meer te leren over mijn vaardigheden en ervaring.
-- Mijn portfolio met afgeronde projecten te bekijken.
-- Contact met mij op te nemen voor samenwerkingen of freelance werk.
-
-### Kenmerken
-- **Next.js en Tailwind CSS**: Supersnelle en responsieve interface.
-- **Portfolio Sectie**: Een overzicht van projecten met beschrijvingen, technologieën en live links.
-- **Contactformulier**: Neem gemakkelijk contact op via een ingebouwd formulier.
-- **Modern Ontwerp**: Een minimalistisch design dat de focus legt op inhoud en gebruiksvriendelijkheid.
-
----
-
-## 🛠️ Technologieën
-- **Framework**: Next.js
-- **Styling**: Tailwind CSS
-- **Formulieren**: Integratie met Firebase
-- **Hosting**: Vercel
+MIT © Julian Oostwal

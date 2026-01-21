@@ -77,7 +77,7 @@ export default async function ProjectPage({ params }: PageProps) {
           __html: JSON.stringify(generateProjectSchema({
             title: project.title,
             description: project.description || "",
-            slug: project.slug,
+            slug: project.slug || project.id,
             imageUrl: project.imageUrl || undefined,
             liveUrl: project.liveUrl || undefined,
             technologies: project.technologies,

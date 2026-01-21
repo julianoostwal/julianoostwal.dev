@@ -13,7 +13,7 @@ import Link from "next/link";
 interface Project {
   id: string;
   title: string;
-  slug: string;
+  slug: string | null;
   description: string | null;
   imageUrl: string | null;
   liveUrl: string | null;

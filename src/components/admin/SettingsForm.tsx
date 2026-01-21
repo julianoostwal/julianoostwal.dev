@@ -11,12 +11,14 @@ interface SiteSettings {
   id: string;
   siteName: string;
   siteDescription: string | null;
+  jobTitle: string | null;
   heroTitle: string | null;
   heroSubtitle: string | null;
   aboutContent: string | null;
   contactEmail: string | null;
   socialLinks: Record<string, string> | null;
   seoKeywords: string[];
+  knowsAbout: string[];
   technologySlugs: string[];
 }
 
@@ -30,6 +32,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
   const [formData, setFormData] = useState({
     siteName: settings.siteName || "",
     siteDescription: settings.siteDescription || "",
+    jobTitle: settings.jobTitle || "",
     heroTitle: settings.heroTitle || "",
     heroSubtitle: settings.heroSubtitle || "",
     aboutContent: settings.aboutContent || "",
@@ -38,6 +41,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
     linkedin: (settings.socialLinks as Record<string, string>)?.linkedin || "",
     twitter: (settings.socialLinks as Record<string, string>)?.twitter || "",
     seoKeywords: settings.seoKeywords?.join(", ") || "",
+    knowsAbout: settings.knowsAbout?.join(", ") || "",
     technologySlugs: settings.technologySlugs?.join(", ") || "",
   });
 
@@ -49,6 +53,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
       const payload = {
         siteName: formData.siteName,
         siteDescription: formData.siteDescription,
+        jobTitle: formData.jobTitle,
         heroTitle: formData.heroTitle,
         heroSubtitle: formData.heroSubtitle,
         aboutContent: formData.aboutContent,
@@ -59,6 +64,10 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
           twitter: formData.twitter,
         },
         seoKeywords: formData.seoKeywords
+          .split(",")
+          .map((k) => k.trim())
+          .filter(Boolean),
+        knowsAbout: formData.knowsAbout
           .split(",")
           .map((k) => k.trim())
           .filter(Boolean),
@@ -108,6 +117,14 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
             variant="bordered"
             rows={3}
             description="Used for SEO meta description"
+          />
+          <Input
+            label="Job Title"
+            value={formData.jobTitle}
+            onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
+            variant="bordered"
+            description="Used in SEO and structured data (e.g. Front-End Developer)"
+            placeholder="Front-End Developer"
           />
           <Input
             label="Contact Email"
@@ -197,6 +214,15 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
             variant="bordered"
             description="Comma-separated SEO keywords"
             placeholder="Developer, Portfolio, Next.js"
+          />
+          <Textarea
+            label="Knows About"
+            value={formData.knowsAbout}
+            onChange={(e) => setFormData({ ...formData, knowsAbout: e.target.value })}
+            variant="bordered"
+            rows={4}
+            description="Comma-separated list used for Schema.org Person.knowsAbout"
+            placeholder="JavaScript, TypeScript, Next.js, PostgreSQL"
           />
         </CardBody>
       </Card>

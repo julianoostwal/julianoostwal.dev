@@ -870,12 +870,14 @@ export const SiteSettingsScalarFieldEnum = {
   id: 'id',
   siteName: 'siteName',
   siteDescription: 'siteDescription',
+  jobTitle: 'jobTitle',
   heroTitle: 'heroTitle',
   heroSubtitle: 'heroSubtitle',
   aboutContent: 'aboutContent',
   contactEmail: 'contactEmail',
   socialLinks: 'socialLinks',
   seoKeywords: 'seoKeywords',
+  knowsAbout: 'knowsAbout',
   technologySlugs: 'technologySlugs',
   updatedAt: 'updatedAt'
 } as const

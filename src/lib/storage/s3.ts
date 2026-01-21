@@ -18,7 +18,7 @@ export const s3Client =
   globalForS3.s3Client ??
   new S3Client({
     endpoint: process.env.S3_ENDPOINT!,
-    region: process.env.S3_REGION !,
+    region: process.env.S3_REGION!,
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY!,
       secretAccessKey: process.env.S3_SECRET_KEY!,

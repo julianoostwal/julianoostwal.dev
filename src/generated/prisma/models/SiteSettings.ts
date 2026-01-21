@@ -28,6 +28,7 @@ export type SiteSettingsMinAggregateOutputType = {
   id: string | null
   siteName: string | null
   siteDescription: string | null
+  jobTitle: string | null
   heroTitle: string | null
   heroSubtitle: string | null
   aboutContent: string | null
@@ -39,6 +40,7 @@ export type SiteSettingsMaxAggregateOutputType = {
   id: string | null
   siteName: string | null
   siteDescription: string | null
+  jobTitle: string | null
   heroTitle: string | null
   heroSubtitle: string | null
   aboutContent: string | null
@@ -50,12 +52,14 @@ export type SiteSettingsCountAggregateOutputType = {
   id: number
   siteName: number
   siteDescription: number
+  jobTitle: number
   heroTitle: number
   heroSubtitle: number
   aboutContent: number
   contactEmail: number
   socialLinks: number
   seoKeywords: number
+  knowsAbout: number
   technologySlugs: number
   updatedAt: number
   _all: number
@@ -66,6 +70,7 @@ export type SiteSettingsMinAggregateInputType = {
   id?: true
   siteName?: true
   siteDescription?: true
+  jobTitle?: true
   heroTitle?: true
   heroSubtitle?: true
   aboutContent?: true
@@ -77,6 +82,7 @@ export type SiteSettingsMaxAggregateInputType = {
   id?: true
   siteName?: true
   siteDescription?: true
+  jobTitle?: true
   heroTitle?: true
   heroSubtitle?: true
   aboutContent?: true
@@ -88,12 +94,14 @@ export type SiteSettingsCountAggregateInputType = {
   id?: true
   siteName?: true
   siteDescription?: true
+  jobTitle?: true
   heroTitle?: true
   heroSubtitle?: true
   aboutContent?: true
   contactEmail?: true
   socialLinks?: true
   seoKeywords?: true
+  knowsAbout?: true
   technologySlugs?: true
   updatedAt?: true
   _all?: true
@@ -175,12 +183,14 @@ export type SiteSettingsGroupByOutputType = {
   id: string
   siteName: string
   siteDescription: string | null
+  jobTitle: string | null
   heroTitle: string | null
   heroSubtitle: string | null
   aboutContent: string | null
   contactEmail: string | null
   socialLinks: runtime.JsonValue | null
   seoKeywords: string[]
+  knowsAbout: string[]
   technologySlugs: string[]
   updatedAt: Date
   _count: SiteSettingsCountAggregateOutputType | null
@@ -210,12 +220,14 @@ export type SiteSettingsWhereInput = {
   id?: Prisma.StringFilter<"SiteSettings"> | string
   siteName?: Prisma.StringFilter<"SiteSettings"> | string
   siteDescription?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
+  jobTitle?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   heroTitle?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   heroSubtitle?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   aboutContent?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   contactEmail?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   socialLinks?: Prisma.JsonNullableFilter<"SiteSettings">
   seoKeywords?: Prisma.StringNullableListFilter<"SiteSettings">
+  knowsAbout?: Prisma.StringNullableListFilter<"SiteSettings">
   technologySlugs?: Prisma.StringNullableListFilter<"SiteSettings">
   updatedAt?: Prisma.DateTimeFilter<"SiteSettings"> | Date | string
 }
@@ -224,12 +236,14 @@ export type SiteSettingsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   siteName?: Prisma.SortOrder
   siteDescription?: Prisma.SortOrderInput | Prisma.SortOrder
+  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   heroTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   heroSubtitle?: Prisma.SortOrderInput | Prisma.SortOrder
   aboutContent?: Prisma.SortOrderInput | Prisma.SortOrder
   contactEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   socialLinks?: Prisma.SortOrderInput | Prisma.SortOrder
   seoKeywords?: Prisma.SortOrder
+  knowsAbout?: Prisma.SortOrder
   technologySlugs?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -241,12 +255,14 @@ export type SiteSettingsWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.SiteSettingsWhereInput | Prisma.SiteSettingsWhereInput[]
   siteName?: Prisma.StringFilter<"SiteSettings"> | string
   siteDescription?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
+  jobTitle?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   heroTitle?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   heroSubtitle?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   aboutContent?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   contactEmail?: Prisma.StringNullableFilter<"SiteSettings"> | string | null
   socialLinks?: Prisma.JsonNullableFilter<"SiteSettings">
   seoKeywords?: Prisma.StringNullableListFilter<"SiteSettings">
+  knowsAbout?: Prisma.StringNullableListFilter<"SiteSettings">
   technologySlugs?: Prisma.StringNullableListFilter<"SiteSettings">
   updatedAt?: Prisma.DateTimeFilter<"SiteSettings"> | Date | string
 }, "id">
@@ -255,12 +271,14 @@ export type SiteSettingsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   siteName?: Prisma.SortOrder
   siteDescription?: Prisma.SortOrderInput | Prisma.SortOrder
+  jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   heroTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   heroSubtitle?: Prisma.SortOrderInput | Prisma.SortOrder
   aboutContent?: Prisma.SortOrderInput | Prisma.SortOrder
   contactEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   socialLinks?: Prisma.SortOrderInput | Prisma.SortOrder
   seoKeywords?: Prisma.SortOrder
+  knowsAbout?: Prisma.SortOrder
   technologySlugs?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SiteSettingsCountOrderByAggregateInput
@@ -275,12 +293,14 @@ export type SiteSettingsScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"SiteSettings"> | string
   siteName?: Prisma.StringWithAggregatesFilter<"SiteSettings"> | string
   siteDescription?: Prisma.StringNullableWithAggregatesFilter<"SiteSettings"> | string | null
+  jobTitle?: Prisma.StringNullableWithAggregatesFilter<"SiteSettings"> | string | null
   heroTitle?: Prisma.StringNullableWithAggregatesFilter<"SiteSettings"> | string | null
   heroSubtitle?: Prisma.StringNullableWithAggregatesFilter<"SiteSettings"> | string | null
   aboutContent?: Prisma.StringNullableWithAggregatesFilter<"SiteSettings"> | string | null
   contactEmail?: Prisma.StringNullableWithAggregatesFilter<"SiteSettings"> | string | null
   socialLinks?: Prisma.JsonNullableWithAggregatesFilter<"SiteSettings">
   seoKeywords?: Prisma.StringNullableListFilter<"SiteSettings">
+  knowsAbout?: Prisma.StringNullableListFilter<"SiteSettings">
   technologySlugs?: Prisma.StringNullableListFilter<"SiteSettings">
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SiteSettings"> | Date | string
 }
@@ -289,12 +309,14 @@ export type SiteSettingsCreateInput = {
   id?: string
   siteName?: string
   siteDescription?: string | null
+  jobTitle?: string | null
   heroTitle?: string | null
   heroSubtitle?: string | null
   aboutContent?: string | null
   contactEmail?: string | null
   socialLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoKeywords?: Prisma.SiteSettingsCreateseoKeywordsInput | string[]
+  knowsAbout?: Prisma.SiteSettingsCreateknowsAboutInput | string[]
   technologySlugs?: Prisma.SiteSettingsCreatetechnologySlugsInput | string[]
   updatedAt?: Date | string
 }
@@ -303,12 +325,14 @@ export type SiteSettingsUncheckedCreateInput = {
   id?: string
   siteName?: string
   siteDescription?: string | null
+  jobTitle?: string | null
   heroTitle?: string | null
   heroSubtitle?: string | null
   aboutContent?: string | null
   contactEmail?: string | null
   socialLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoKeywords?: Prisma.SiteSettingsCreateseoKeywordsInput | string[]
+  knowsAbout?: Prisma.SiteSettingsCreateknowsAboutInput | string[]
   technologySlugs?: Prisma.SiteSettingsCreatetechnologySlugsInput | string[]
   updatedAt?: Date | string
 }
@@ -317,12 +341,14 @@ export type SiteSettingsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   siteName?: Prisma.StringFieldUpdateOperationsInput | string
   siteDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroSubtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoKeywords?: Prisma.SiteSettingsUpdateseoKeywordsInput | string[]
+  knowsAbout?: Prisma.SiteSettingsUpdateknowsAboutInput | string[]
   technologySlugs?: Prisma.SiteSettingsUpdatetechnologySlugsInput | string[]
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -331,12 +357,14 @@ export type SiteSettingsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   siteName?: Prisma.StringFieldUpdateOperationsInput | string
   siteDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroSubtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoKeywords?: Prisma.SiteSettingsUpdateseoKeywordsInput | string[]
+  knowsAbout?: Prisma.SiteSettingsUpdateknowsAboutInput | string[]
   technologySlugs?: Prisma.SiteSettingsUpdatetechnologySlugsInput | string[]
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -345,12 +373,14 @@ export type SiteSettingsCreateManyInput = {
   id?: string
   siteName?: string
   siteDescription?: string | null
+  jobTitle?: string | null
   heroTitle?: string | null
   heroSubtitle?: string | null
   aboutContent?: string | null
   contactEmail?: string | null
   socialLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoKeywords?: Prisma.SiteSettingsCreateseoKeywordsInput | string[]
+  knowsAbout?: Prisma.SiteSettingsCreateknowsAboutInput | string[]
   technologySlugs?: Prisma.SiteSettingsCreatetechnologySlugsInput | string[]
   updatedAt?: Date | string
 }
@@ -359,12 +389,14 @@ export type SiteSettingsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   siteName?: Prisma.StringFieldUpdateOperationsInput | string
   siteDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroSubtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoKeywords?: Prisma.SiteSettingsUpdateseoKeywordsInput | string[]
+  knowsAbout?: Prisma.SiteSettingsUpdateknowsAboutInput | string[]
   technologySlugs?: Prisma.SiteSettingsUpdatetechnologySlugsInput | string[]
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -373,12 +405,14 @@ export type SiteSettingsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   siteName?: Prisma.StringFieldUpdateOperationsInput | string
   siteDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heroSubtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   aboutContent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contactEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   socialLinks?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   seoKeywords?: Prisma.SiteSettingsUpdateseoKeywordsInput | string[]
+  knowsAbout?: Prisma.SiteSettingsUpdateknowsAboutInput | string[]
   technologySlugs?: Prisma.SiteSettingsUpdatetechnologySlugsInput | string[]
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -387,12 +421,14 @@ export type SiteSettingsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   siteName?: Prisma.SortOrder
   siteDescription?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
   heroTitle?: Prisma.SortOrder
   heroSubtitle?: Prisma.SortOrder
   aboutContent?: Prisma.SortOrder
   contactEmail?: Prisma.SortOrder
   socialLinks?: Prisma.SortOrder
   seoKeywords?: Prisma.SortOrder
+  knowsAbout?: Prisma.SortOrder
   technologySlugs?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -401,6 +437,7 @@ export type SiteSettingsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   siteName?: Prisma.SortOrder
   siteDescription?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
   heroTitle?: Prisma.SortOrder
   heroSubtitle?: Prisma.SortOrder
   aboutContent?: Prisma.SortOrder
@@ -412,6 +449,7 @@ export type SiteSettingsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   siteName?: Prisma.SortOrder
   siteDescription?: Prisma.SortOrder
+  jobTitle?: Prisma.SortOrder
   heroTitle?: Prisma.SortOrder
   heroSubtitle?: Prisma.SortOrder
   aboutContent?: Prisma.SortOrder
@@ -423,11 +461,20 @@ export type SiteSettingsCreateseoKeywordsInput = {
   set: string[]
 }
 
+export type SiteSettingsCreateknowsAboutInput = {
+  set: string[]
+}
+
 export type SiteSettingsCreatetechnologySlugsInput = {
   set: string[]
 }
 
 export type SiteSettingsUpdateseoKeywordsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type SiteSettingsUpdateknowsAboutInput = {
   set?: string[]
   push?: string | string[]
 }
@@ -443,12 +490,14 @@ export type SiteSettingsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   siteName?: boolean
   siteDescription?: boolean
+  jobTitle?: boolean
   heroTitle?: boolean
   heroSubtitle?: boolean
   aboutContent?: boolean
   contactEmail?: boolean
   socialLinks?: boolean
   seoKeywords?: boolean
+  knowsAbout?: boolean
   technologySlugs?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSettings"]>
@@ -457,12 +506,14 @@ export type SiteSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   siteName?: boolean
   siteDescription?: boolean
+  jobTitle?: boolean
   heroTitle?: boolean
   heroSubtitle?: boolean
   aboutContent?: boolean
   contactEmail?: boolean
   socialLinks?: boolean
   seoKeywords?: boolean
+  knowsAbout?: boolean
   technologySlugs?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSettings"]>
@@ -471,12 +522,14 @@ export type SiteSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   siteName?: boolean
   siteDescription?: boolean
+  jobTitle?: boolean
   heroTitle?: boolean
   heroSubtitle?: boolean
   aboutContent?: boolean
   contactEmail?: boolean
   socialLinks?: boolean
   seoKeywords?: boolean
+  knowsAbout?: boolean
   technologySlugs?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["siteSettings"]>
@@ -485,17 +538,19 @@ export type SiteSettingsSelectScalar = {
   id?: boolean
   siteName?: boolean
   siteDescription?: boolean
+  jobTitle?: boolean
   heroTitle?: boolean
   heroSubtitle?: boolean
   aboutContent?: boolean
   contactEmail?: boolean
   socialLinks?: boolean
   seoKeywords?: boolean
+  knowsAbout?: boolean
   technologySlugs?: boolean
   updatedAt?: boolean
 }
 
-export type SiteSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "siteName" | "siteDescription" | "heroTitle" | "heroSubtitle" | "aboutContent" | "contactEmail" | "socialLinks" | "seoKeywords" | "technologySlugs" | "updatedAt", ExtArgs["result"]["siteSettings"]>
+export type SiteSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "siteName" | "siteDescription" | "jobTitle" | "heroTitle" | "heroSubtitle" | "aboutContent" | "contactEmail" | "socialLinks" | "seoKeywords" | "knowsAbout" | "technologySlugs" | "updatedAt", ExtArgs["result"]["siteSettings"]>
 
 export type $SiteSettingsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SiteSettings"
@@ -504,12 +559,14 @@ export type $SiteSettingsPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     siteName: string
     siteDescription: string | null
+    jobTitle: string | null
     heroTitle: string | null
     heroSubtitle: string | null
     aboutContent: string | null
     contactEmail: string | null
     socialLinks: runtime.JsonValue | null
     seoKeywords: string[]
+    knowsAbout: string[]
     technologySlugs: string[]
     updatedAt: Date
   }, ExtArgs["result"]["siteSettings"]>
@@ -938,12 +995,14 @@ export interface SiteSettingsFieldRefs {
   readonly id: Prisma.FieldRef<"SiteSettings", 'String'>
   readonly siteName: Prisma.FieldRef<"SiteSettings", 'String'>
   readonly siteDescription: Prisma.FieldRef<"SiteSettings", 'String'>
+  readonly jobTitle: Prisma.FieldRef<"SiteSettings", 'String'>
   readonly heroTitle: Prisma.FieldRef<"SiteSettings", 'String'>
   readonly heroSubtitle: Prisma.FieldRef<"SiteSettings", 'String'>
   readonly aboutContent: Prisma.FieldRef<"SiteSettings", 'String'>
   readonly contactEmail: Prisma.FieldRef<"SiteSettings", 'String'>
   readonly socialLinks: Prisma.FieldRef<"SiteSettings", 'Json'>
   readonly seoKeywords: Prisma.FieldRef<"SiteSettings", 'String[]'>
+  readonly knowsAbout: Prisma.FieldRef<"SiteSettings", 'String[]'>
   readonly technologySlugs: Prisma.FieldRef<"SiteSettings", 'String[]'>
   readonly updatedAt: Prisma.FieldRef<"SiteSettings", 'DateTime'>
 }

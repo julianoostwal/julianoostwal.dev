@@ -68,6 +68,11 @@ export default async function ProjectPage({ params }: PageProps) {
     notFound();
   }
 
+  const settings = await prisma.siteSettings.findUnique({
+    where: { id: "default" },
+    select: { siteName: true },
+  });
+
   return (
     <>
       <Script
@@ -82,6 +87,7 @@ export default async function ProjectPage({ params }: PageProps) {
             liveUrl: project.liveUrl || undefined,
             technologies: project.technologies,
             createdAt: project.createdAt,
+            authorName: settings?.siteName ?? undefined,
           })),
         }}
       />

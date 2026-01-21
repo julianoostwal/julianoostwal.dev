@@ -43,12 +43,14 @@ export async function PUT(request: NextRequest) {
       data: {
         ...(body.siteName !== undefined && { siteName: body.siteName }),
         ...(body.siteDescription !== undefined && { siteDescription: body.siteDescription }),
+        ...(body.jobTitle !== undefined && { jobTitle: body.jobTitle }),
         ...(body.heroTitle !== undefined && { heroTitle: body.heroTitle }),
         ...(body.heroSubtitle !== undefined && { heroSubtitle: body.heroSubtitle }),
         ...(body.aboutContent !== undefined && { aboutContent: body.aboutContent }),
         ...(body.contactEmail !== undefined && { contactEmail: body.contactEmail }),
         ...(body.socialLinks !== undefined && { socialLinks: body.socialLinks }),
         ...(body.seoKeywords !== undefined && { seoKeywords: body.seoKeywords }),
+        ...(body.knowsAbout !== undefined && { knowsAbout: body.knowsAbout }),
         ...(body.technologySlugs !== undefined && { technologySlugs: body.technologySlugs }),
       },
     });

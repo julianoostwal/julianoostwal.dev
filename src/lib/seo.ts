@@ -1,7 +1,22 @@
 import { Metadata, Viewport } from "next";
 import { prisma } from "@/lib/db/prisma";
+import { cache } from "react";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+const getSiteSettings = cache(async () => {
+  return prisma.siteSettings.findUnique({
+    where: { id: "default" },
+    select: {
+      siteName: true,
+      siteDescription: true,
+      jobTitle: true,
+      seoKeywords: true,
+      socialLinks: true,
+      knowsAbout: true,
+    },
+  });
+});
 
 interface GenerateMetadataOptions {
   title?: string;
@@ -13,10 +28,7 @@ interface GenerateMetadataOptions {
 }
 
 export async function generateSiteMetadata(options: GenerateMetadataOptions = {}): Promise<Metadata> {
-  const settings = await prisma.siteSettings.findUnique({
-    where: { id: "default" },
-    select: { siteName: true, siteDescription: true, seoKeywords: true },
-  });
+  const settings = await getSiteSettings();
 
   const {
     title,
@@ -28,7 +40,8 @@ export async function generateSiteMetadata(options: GenerateMetadataOptions = {}
   } = options;
 
   const siteName = settings?.siteName ?? "Portfolio";
-  const fullTitle = title ? `${title} | ${siteName}` : `${siteName} | Front-End Developer Portfolio`;
+  const jobTitle = settings?.jobTitle?.trim() || "Full-Stack Developer";
+  const fullTitle = title ? `${title} | ${siteName}` : `${siteName} | ${jobTitle} Portfolio`;
 
   const url = `${baseUrl}${pathname}`;
   const imageUrl = image.startsWith("http") ? image : `${baseUrl}${image}`;
@@ -94,43 +107,39 @@ export const viewport: Viewport = {
 
 // JSON-LD structured data
 export async function generatePersonSchema() {
-  const settings = await prisma.siteSettings.findUnique({
-    where: { id: "default" },
-    select: { siteName: true, socialLinks: true },
-  });
+  const settings = await getSiteSettings();
 
   const socialLinks = settings?.socialLinks as Record<string, string> | null;
   const sameAs = Object.values(socialLinks ?? {}).filter(Boolean);
 
-  return {
+  const knowsAbout = (settings?.knowsAbout ?? [])
+    .map((v) => v.trim())
+    .filter(Boolean)
+    .slice(0, 30);
+
+  const person: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: settings?.siteName ?? "Portfolio",
     url: baseUrl,
     image: `${baseUrl}/profile.jpg`,
-    jobTitle: "Front-End Developer",
+    jobTitle: settings?.jobTitle?.trim() || "Full-Stack Developer",
     worksFor: {
       "@type": "Organization",
       name: "Freelance",
     },
     sameAs,
-    knowsAbout: [
-      "JavaScript",
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Node.js",
-      "Web Development",
-      "Front-End Development",
-    ],
   };
+
+  if (knowsAbout.length > 0) {
+    person.knowsAbout = knowsAbout;
+  }
+
+  return person;
 }
 
 export async function generateWebsiteSchema() {
-  const settings = await prisma.siteSettings.findUnique({
-    where: { id: "default" },
-    select: { siteName: true, siteDescription: true },
-  });
+  const settings = await getSiteSettings();
 
   return {
     "@context": "https://schema.org",
@@ -158,6 +167,7 @@ export function generateProjectSchema(project: {
   liveUrl?: string;
   technologies?: string[];
   createdAt: Date;
+  authorName?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -170,7 +180,7 @@ export function generateProjectSchema(project: {
     operatingSystem: "Web Browser",
     author: {
       "@type": "Person",
-      name: "Julian Oostwal",
+      name: project.authorName ?? "Portfolio",
     },
     datePublished: project.createdAt.toISOString(),
     offers: {

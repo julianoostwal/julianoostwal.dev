@@ -3,6 +3,7 @@ import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/db/prisma";
 import { createHmac } from "crypto";
+import { isIP } from "net";
 
 const mailerSend = new MailerSend({
     apiKey: process.env.MAILERSEND_API_KEY!,
@@ -23,10 +24,72 @@ interface SendEmailOptions {
     honeypot?: string;
 }
 
+function normalizeIpCandidate(value: string): string {
+    let v = value.trim();
+    if (!v) return v;
+    // Strip zone id (e.g. fe80::1%lo0)
+    v = v.split("%")[0] ?? v;
+    // Strip brackets (e.g. [2001:db8::1]:1234)
+    if (v.startsWith("[") && v.includes("]")) {
+        v = v.slice(1, v.indexOf("]"));
+    }
+    // Strip port for IPv4 (e.g. 1.2.3.4:1234)
+    if (v.includes(".") && v.includes(":") && v.indexOf(":") === v.lastIndexOf(":")) {
+        const [ipPart] = v.split(":");
+        if (ipPart) v = ipPart;
+    }
+    return v;
+}
+
+function isPrivateOrReservedIp(ip: string): boolean {
+    const kind = isIP(ip);
+    if (kind === 4) {
+        const parts = ip.split(".").map((p) => Number(p));
+        if (parts.length !== 4 || parts.some((p) => Number.isNaN(p))) return true;
+        const [a, b] = parts;
+        if (a === 10) return true;
+        if (a === 127) return true;
+        if (a === 0) return true;
+        if (a === 169 && b === 254) return true;
+        if (a === 192 && b === 168) return true;
+        if (a === 172 && b >= 16 && b <= 31) return true;
+        if (a === 100 && b >= 64 && b <= 127) return true; // CGNAT
+        return false;
+    }
+    if (kind === 6) {
+        const lower = ip.toLowerCase();
+        if (lower === "::1") return true;
+        if (lower.startsWith("fe80:")) return true; // link-local
+        if (lower.startsWith("fc") || lower.startsWith("fd")) return true; // unique local (fc00::/7)
+        return false;
+    }
+    return true;
+}
+
 function getRequestIpFromHeaders(h: Headers): string | null {
+    // Prefer headers that (when present) usually contain the original client IP.
+    // Note: these are trustworthy only when set by a trusted reverse proxy.
+    const directHeaders = ["cf-connecting-ip", "true-client-ip", "x-client-ip", "x-real-ip"];
+    for (const key of directHeaders) {
+        const raw = h.get(key);
+        if (!raw) continue;
+        const ip = normalizeIpCandidate(raw);
+        if (isIP(ip)) return ip;
+    }
+
     const xff = h.get("x-forwarded-for");
-    if (xff) return xff.split(",")[0]?.trim() || null;
-    return h.get("x-real-ip") || h.get("cf-connecting-ip") || null;
+    if (xff) {
+        const candidates = xff
+            .split(",")
+            .map((p) => normalizeIpCandidate(p))
+            .filter((ip) => Boolean(ip) && Boolean(isIP(ip)));
+        if (candidates.length) {
+            const firstPublic = candidates.find((ip) => !isPrivateOrReservedIp(ip));
+            return firstPublic ?? candidates[0] ?? null;
+        }
+    }
+
+    return null;
 }
 
 function firstHeader(h: Headers, keys: string[]): string | null {
@@ -38,15 +101,43 @@ function firstHeader(h: Headers, keys: string[]): string | null {
 }
 
 function anonymizeIp(ip: string): string {
-    if (ip.includes(":")) {
-        const parts = ip.split(":");
+    const kind = isIP(ip);
+    if (kind === 6) {
+        const expanded = expandIpv6(ip);
         // Keep first 3 hextets (roughly /48), zero the rest.
-        const kept = parts.slice(0, 3);
-        return [...kept, "0000", "0000", "0000", "0000", "0000"].slice(0, 8).join(":");
+        return [...expanded.slice(0, 3), "0000", "0000", "0000", "0000", "0000"].join(":");
     }
-    const parts = ip.split(".");
-    if (parts.length === 4) return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
+    if (kind === 4) {
+        const parts = ip.split(".");
+        if (parts.length === 4) return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
+    }
     return ip;
+}
+
+function expandIpv6(ip: string): string[] {
+    // Returns 8 hextets, zero-padded to 4 chars.
+    const lower = normalizeIpCandidate(ip).toLowerCase();
+    const [leftRaw, rightRaw] = lower.split("::");
+    const left = leftRaw ? leftRaw.split(":").filter(Boolean) : [];
+    const right = rightRaw ? rightRaw.split(":").filter(Boolean) : [];
+
+    const convertEmbeddedIpv4 = (parts: string[]) => {
+        const last = parts[parts.length - 1];
+        if (!last || !last.includes(".")) return parts;
+        const nums = last.split(".").map((n) => Number(n));
+        if (nums.length !== 4 || nums.some((n) => Number.isNaN(n))) return parts;
+        const hi = ((nums[0] << 8) | nums[1]).toString(16);
+        const lo = ((nums[2] << 8) | nums[3]).toString(16);
+        return [...parts.slice(0, -1), hi, lo];
+    };
+
+    const left2 = convertEmbeddedIpv4(left);
+    const right2 = convertEmbeddedIpv4(right);
+    const missing = 8 - (left2.length + right2.length);
+    const middle = missing > 0 ? Array.from({ length: missing }, () => "0") : [];
+    const full = [...left2, ...middle, ...right2].slice(0, 8);
+    while (full.length < 8) full.push("0");
+    return full.map((h) => h.padStart(4, "0"));
 }
 
 function hashIp(ip: string): string | null {

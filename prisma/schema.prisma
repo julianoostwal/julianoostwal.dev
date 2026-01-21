@@ -73,12 +73,14 @@ model SiteSettings {
   id          String   @id @default("default")
   siteName    String   @default("Julian Oostwal") @map("site_name")
   siteDescription String? @map("site_description") @db.Text
+  jobTitle    String?  @map("job_title")
   heroTitle   String?  @map("hero_title")
   heroSubtitle String? @map("hero_subtitle") @db.Text
   aboutContent String? @map("about_content") @db.Text
   contactEmail String? @map("contact_email")
   socialLinks  Json?   @map("social_links")
   seoKeywords  String[] @default([]) @map("seo_keywords")
+  knowsAbout  String[] @default([]) @map("knows_about")
   technologySlugs String[] @default([]) @map("technology_slugs")
   updatedAt   DateTime @updatedAt @map("updated_at")
 

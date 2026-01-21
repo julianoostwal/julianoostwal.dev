@@ -12,7 +12,7 @@ import ImageUpload from "./ImageUpload";
 interface Project {
   id: string;
   title: string;
-  slug: string;
+  slug: string | null;
   description: string | null;
   content: string | null;
   imageUrl: string | null;

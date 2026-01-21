@@ -20,7 +20,7 @@ export default async function AdminLayout({
         body > div > nav,
         body > div > footer { display: none !important; }
       `}</style>
-      <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="flex min-h-screen">
         <AdminSidebar />
         <main className="flex-1 p-8 ml-64">{children}</main>
       </div>

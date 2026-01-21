@@ -54,7 +54,8 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Project: 'Project',
-  SiteSettings: 'SiteSettings'
+  SiteSettings: 'SiteSettings',
+  ContactMessage: 'ContactMessage'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -137,6 +138,38 @@ export const SiteSettingsScalarFieldEnum = {
 } as const
 
 export type SiteSettingsScalarFieldEnum = (typeof SiteSettingsScalarFieldEnum)[keyof typeof SiteSettingsScalarFieldEnum]
+
+
+export const ContactMessageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  subject: 'subject',
+  message: 'message',
+  isRead: 'isRead',
+  readAt: 'readAt',
+  isSpam: 'isSpam',
+  spamScore: 'spamScore',
+  spamReasons: 'spamReasons',
+  ipAnonymized: 'ipAnonymized',
+  ipHash: 'ipHash',
+  userAgent: 'userAgent',
+  referer: 'referer',
+  acceptLanguage: 'acceptLanguage',
+  geoCountry: 'geoCountry',
+  geoRegion: 'geoRegion',
+  geoCity: 'geoCity',
+  aiSuggestedReply: 'aiSuggestedReply',
+  aiModel: 'aiModel',
+  aiSuggestedAt: 'aiSuggestedAt',
+  replySubject: 'replySubject',
+  replyBody: 'replyBody',
+  repliedAt: 'repliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContactMessageScalarFieldEnum = (typeof ContactMessageScalarFieldEnum)[keyof typeof ContactMessageScalarFieldEnum]
 
 
 export const SortOrder = {

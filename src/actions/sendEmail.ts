@@ -1,5 +1,8 @@
 "use server";
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
+import { headers } from "next/headers";
+import { prisma } from "@/lib/db/prisma";
+import { createHmac } from "crypto";
 
 const mailerSend = new MailerSend({
     apiKey: process.env.MAILERSEND_API_KEY!,
@@ -16,11 +19,81 @@ interface FromData {
     name: string;
 }
 
+interface SendEmailOptions {
+    honeypot?: string;
+}
+
+function getRequestIpFromHeaders(h: Headers): string | null {
+    const xff = h.get("x-forwarded-for");
+    if (xff) return xff.split(",")[0]?.trim() || null;
+    return h.get("x-real-ip") || h.get("cf-connecting-ip") || null;
+}
+
+function firstHeader(h: Headers, keys: string[]): string | null {
+    for (const key of keys) {
+        const value = h.get(key);
+        if (value && value.trim()) return value.trim();
+    }
+    return null;
+}
+
+function anonymizeIp(ip: string): string {
+    if (ip.includes(":")) {
+        const parts = ip.split(":");
+        // Keep first 3 hextets (roughly /48), zero the rest.
+        const kept = parts.slice(0, 3);
+        return [...kept, "0000", "0000", "0000", "0000", "0000"].slice(0, 8).join(":");
+    }
+    const parts = ip.split(".");
+    if (parts.length === 4) return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
+    return ip;
+}
+
+function hashIp(ip: string): string | null {
+    const salt = process.env.IP_HASH_SALT;
+    if (!salt) return null;
+    return createHmac("sha256", salt).update(ip).digest("hex");
+}
+
+function assessSpam(input: { name: string; email: string; subject: string; message: string; honeypot?: string }) {
+    const reasons: string[] = [];
+    let score = 0;
+
+    if (input.honeypot?.trim()) {
+        score += 100;
+        reasons.push("honeypot_filled");
+    }
+
+    const urlMatches = input.message.match(/https?:\/\/\S+/gi) ?? [];
+    if (urlMatches.length >= 2) {
+        score += 30;
+        reasons.push("many_links");
+    }
+
+    if (input.message.trim().length < 12) {
+        score += 15;
+        reasons.push("very_short_message");
+    }
+
+    if (!input.subject.trim()) {
+        score += 5;
+        reasons.push("empty_subject");
+    }
+
+    if (/\b(crypto|seo|backlinks|casino|viagra|loan)\b/i.test(input.message)) {
+        score += 25;
+        reasons.push("spam_keywords");
+    }
+
+    return { isSpam: score >= 40, score, reasons };
+}
+
 async function sendEmail(
     to: string,
     from: FromData,
     subject: string,
-    data: EmailData
+    data: EmailData,
+    options: SendEmailOptions = {}
 ) {
     try {
         // Input validation
@@ -119,6 +192,44 @@ async function sendEmail(
         if (response.statusCode !== 202) {
             throw new Error(`Failed to send email: ${response.statusCode}`);
         }
+
+        // Store contact message for admin inbox (privacy: store anonymized IP + optional salted hash)
+        const h = await headers();
+        const ip = getRequestIpFromHeaders(h);
+        const ipAnonymized = ip ? anonymizeIp(ip) : null;
+
+        // Geo headers depend on your hosting/proxy (Cloudflare, Nginx, etc). We read a few common ones.
+        const geoCountry = firstHeader(h, ["cf-ipcountry", "x-geo-country", "x-country"]);
+        const geoRegion = firstHeader(h, ["cf-region", "x-geo-region", "x-region"]);
+        const geoCity = firstHeader(h, ["cf-ipcity", "x-geo-city", "x-city"]);
+
+        const { isSpam, score, reasons } = assessSpam({
+            name: data.name,
+            email: data.email,
+            subject,
+            message: data.message,
+            honeypot: options.honeypot,
+        });
+
+        await prisma.contactMessage.create({
+            data: {
+                name: data.name,
+                email: data.email,
+                subject,
+                message: data.message,
+                isSpam,
+                spamScore: score,
+                spamReasons: reasons,
+                ipAnonymized,
+                ipHash: ip ? hashIp(ip) : null,
+                userAgent: h.get("user-agent"),
+                referer: h.get("referer"),
+                acceptLanguage: h.get("accept-language"),
+                geoCountry: geoCountry || null,
+                geoRegion: geoRegion || null,
+                geoCity: geoCity || null,
+            },
+        });
 
         return { data: "Email sent successfully!", error: null };
     } catch (error) {

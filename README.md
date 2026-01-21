@@ -7,6 +7,7 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 - 🎨 **Modern UI** - Built with HeroUI and Tailwind CSS
 - 🔐 **Custom Auth** - JWT-based authentication with refresh tokens
 - 📊 **Admin Panel** - Full CMS for managing projects, and settings
+- 📥 **Contact Inbox** - Admin inbox for contact messages (read/unread, spam flags, reply)
 - 📦 **Database** - PostgreSQL with Prisma ORM
 - 🗄️ **File Storage** - SeaweedFS (S3-compatible) for image uploads
 - 🔍 **SEO Optimized** - Sitemap, robots.txt, structured data, Open Graph
@@ -27,7 +28,7 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 24+
 - pnpm 10+
 - PostgreSQL database
 - SeaweedFS S3 storage (https://github.com/seaweedfs/seaweedfs)
@@ -65,7 +66,7 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 ### Default Admin Credentials
 
 After seeding the database:
-- **Email**: admin@julianoostwal.dev
+- **Email**: info@julianoostwal.dev
 - **Password**: Admin123!
 
 ⚠️ **Change these credentials immediately after first login!**
@@ -91,12 +92,14 @@ src/
 │   ├── admin/           # Admin panel pages
 │   ├── api/             # API routes
 │   │   ├── auth/        # Authentication endpoints
+│   │   ├── contact-messages/ # Contact inbox endpoints
 │   │   ├── projects/    # Projects CRUD
 │   │   ├── settings/    # Site settings
 │   │   └── upload/      # File uploads
 │   ├── about/           # About page
 │   ├── contact/         # Contact page
 │   └── projects/        # Projects page
+│   ├── page.tsx         # Home page
 ├── components/
 │   ├── admin/           # Admin components
 │   └── ui/              # Shared UI components

@@ -1,15 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        remotePatterns: [
-          {
-            protocol: 'https',
-            hostname: 'minio-sss8o88ck0o0ckggo4ogs48w.5.253.247.243.sslip.io',
-            port: '',
-            pathname: '/**',
-          },
-        ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "9000",
+      },
+    ],
+  },
+  // Disable powered by header
+  poweredByHeader: false,
+  // Compress responses
+  compress: true,
+  // Experimental features for better performance
+  experimental: {
+    optimizePackageImports: ["lucide-react", "@heroui/react", "framer-motion"],
+  },
 };
 
 export default nextConfig;

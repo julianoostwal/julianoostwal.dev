@@ -1,33 +1,48 @@
+import { prisma } from "@/lib/db/prisma";
+import { notFound } from "next/navigation";
 import IconCloud from "@/components/IconCloud";
-import { Button } from "@heroui/button";
-import { Link } from "@heroui/link";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 
-export default function Home() {
+// Revalidate every 60 seconds - updates from dashboard will show within 1 minute
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const settings = await prisma.siteSettings.findUnique({
+    where: { id: "default" },
+    select: { heroTitle: true, heroSubtitle: true, socialLinks: true },
+  });
+
+  if (!settings) {
+    notFound();
+  }
+
+  const socialLinks = settings.socialLinks as Record<string, string> | null;
+
   return (
     <main className="min-h-screen flex justify-center items-center">
       <div className="container">
         <div className="flex flex-wrap gap-6 justify-evenly items-center -mt-16">
           <div className="max-w-2xl gap-2 flex flex-col">
-              <h1 className="text-2xl font-bold">Hi, I&apos;m Julian Oostwal</h1>
-              <p>
-                I&apos;m a frontend developer with a passion for building seamless, user-focused web experiences. Leveraging Next.js, React, and a range of modern web technologies, I bring designs to life with clean, efficient code.
-              </p>
-              <p>
-                Driven by innovation and the pursuit of mastery, I continuously explore new tools and frameworks to stay at the forefront of frontend development.
-              </p>
+            <h1 className="text-2xl font-bold">{settings.heroTitle}</h1>
+            <p>{settings.heroSubtitle}</p>
             <div className="flex flex-wrap gap-4 mt-4">
-              <Button color="secondary" radius="full" href="/projects" as={Link}>View my work</Button>
-              <Button color="primary" href="/contact" as={Link}>Contact Me</Button>
-              <Button
-                color="default"
-                radius="full"
-                href="https://github.com/julianoostwal"
-                target="_blank"
-                rel="noopener noreferrer"
-                as={Link}
-              >
-                GitHub
-              </Button>
+              <ButtonLink color="secondary" radius="full" href="/projects">
+                View my work
+              </ButtonLink>
+              <ButtonLink color="primary" href="/contact">
+                Contact Me
+              </ButtonLink>
+              {socialLinks?.github && (
+                <ButtonLink
+                  color="default"
+                  radius="full"
+                  href={socialLinks.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </ButtonLink>
+              )}
             </div>
           </div>
           <IconCloud />

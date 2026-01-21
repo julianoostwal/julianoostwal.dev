@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes';
 import { FaMoon } from "react-icons/fa";
 import { IoSunny } from "react-icons/io5";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,13 +21,13 @@ export default function Navbar() {
     const pathname = usePathname();
     const { setTheme, theme } = useTheme()
 
-    const menuVariants = {
+    const menuVariants: Variants = {
         open: {
             y: 0,
             opacity: 1,
             transition: {
                 duration: 0.3,
-                ease: "easeInOut",
+                ease: "easeInOut" as const,
             },
         }
     };

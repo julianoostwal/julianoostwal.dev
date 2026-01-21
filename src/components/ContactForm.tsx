@@ -16,6 +16,7 @@ export default function ContactForm({ contactEmail }: ContactFormProps) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [subject, setSubject] = useState("");
+  const [website, setWebsite] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -26,7 +27,8 @@ export default function ContactForm({ contactEmail }: ContactFormProps) {
       contactEmail,
       { email: `noreply@${contactEmail.split("@")[1]}`, name: "Portfolio Contact" },
       subject || "New message from portfolio",
-      { email, name, message }
+      { email, name, message },
+      { honeypot: website }
     );
 
     setLoading(false);
@@ -60,8 +62,26 @@ export default function ContactForm({ contactEmail }: ContactFormProps) {
         </a>{" "}
         or through this form.
       </p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        For spam prevention and to reply, I store your message and minimal technical metadata
+        (like an anonymized IP and user-agent). I don’t store your full IP address.
+      </p>
 
       <form className="mt-6 flex flex-col" onSubmit={handleSubmit}>
+        <div
+          aria-hidden="true"
+          style={{ position: "absolute", left: "-10000px", top: "auto", width: 1, height: 1, overflow: "hidden" }}
+        >
+          <Input
+            label="Website"
+            type="text"
+            autoComplete="off"
+            tabIndex={-1}
+            onChange={(e) => setWebsite(e.target.value)}
+            value={website}
+          />
+        </div>
+
         <Input
           label="Full name"
           type="text"

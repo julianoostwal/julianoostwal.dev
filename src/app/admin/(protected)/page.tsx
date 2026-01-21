@@ -1,10 +1,13 @@
 import { prisma } from "@/lib/db/prisma";
 import { Card, CardBody } from "@heroui/card";
-import { FolderKanban, Settings } from "lucide-react";
+import { FolderKanban, Mail, Settings } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminDashboard() {
   const projectCount = await prisma.project.count();
+  const unreadMessageCount = await prisma.contactMessage.count({
+    where: { isRead: false, isSpam: false },
+  });
 
   const stats = [
     {
@@ -13,6 +16,13 @@ export default async function AdminDashboard() {
       icon: FolderKanban,
       href: "/admin/projects",
       color: "bg-blue-500",
+    },
+    {
+      title: "Unread Messages",
+      value: unreadMessageCount,
+      icon: Mail,
+      href: "/admin/messages",
+      color: "bg-emerald-500",
     },
     {
       title: "Settings",

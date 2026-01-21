@@ -37,3 +37,8 @@ export type Project = Prisma.ProjectModel
  * 
  */
 export type SiteSettings = Prisma.SiteSettingsModel
+/**
+ * Model ContactMessage
+ * 
+ */
+export type ContactMessage = Prisma.ContactMessageModel

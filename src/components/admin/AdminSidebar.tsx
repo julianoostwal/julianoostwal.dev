@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { 
   LayoutDashboard, 
   FolderKanban, 
+  Mail,
   Settings, 
   LogOut,
   Home,
@@ -18,6 +19,7 @@ import { toast } from "sonner";
 const menuItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },
+  { href: "/admin/messages", label: "Messages", icon: Mail },
   { href: "/admin/settings", label: "Settings", icon: Settings },
   { href: "/admin/profile", label: "Profile", icon: User },
 ];

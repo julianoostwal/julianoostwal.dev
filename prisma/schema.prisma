@@ -85,6 +85,47 @@ model SiteSettings {
   @@map("site_settings")
 }
 
+model ContactMessage {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  subject       String?
+  message       String   @db.Text
+
+  isRead        Boolean  @default(false) @map("is_read")
+  readAt        DateTime? @map("read_at")
+  isSpam        Boolean  @default(false) @map("is_spam")
+  spamScore     Int      @default(0) @map("spam_score")
+  spamReasons   String[] @default([]) @map("spam_reasons")
+
+  ipAnonymized  String?  @map("ip_anonymized")
+  ipHash        String?  @map("ip_hash")
+  userAgent     String?  @map("user_agent")
+  referer       String?  @map("referer")
+  acceptLanguage String? @map("accept_language")
+
+  geoCountry    String?  @map("geo_country")
+  geoRegion     String?  @map("geo_region")
+  geoCity       String?  @map("geo_city")
+
+  aiSuggestedReply String? @map("ai_suggested_reply") @db.Text
+  aiModel        String?  @map("ai_model")
+  aiSuggestedAt  DateTime? @map("ai_suggested_at")
+
+  replySubject   String?  @map("reply_subject")
+  replyBody      String?  @map("reply_body") @db.Text
+  repliedAt      DateTime? @map("replied_at")
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([createdAt])
+  @@index([isRead])
+  @@index([isSpam])
+  @@index([email])
+  @@map("contact_messages")
+}
+
 enum Role {
   ADMIN
   SUPER_ADMIN

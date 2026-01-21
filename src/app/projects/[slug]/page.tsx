@@ -15,19 +15,26 @@ interface PageProps {
 export async function generateStaticParams() {
   const projects = await prisma.project.findMany({
     where: { published: true },
-    select: { slug: true },
+    select: { slug: true, id: true },
   });
 
   return projects.map((project) => ({
-    slug: project.slug,
+    slug: project.slug || project.id,
   }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   
-  const project = await prisma.project.findUnique({
-    where: { slug, published: true },
+  // Find by slug first, then by id
+  const project = await prisma.project.findFirst({
+    where: {
+      published: true,
+      OR: [
+        { slug },
+        { id: slug },
+      ],
+    },
   });
 
   if (!project) {
@@ -38,15 +45,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: project.title,
     description: project.description || undefined,
     image: project.imageUrl || undefined,
-    pathname: `/projects/${project.slug}`,
+    pathname: `/projects/${project.slug || project.id}`,
+    noIndex: project.noIndex,
   });
 }
 
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const project = await prisma.project.findUnique({
-    where: { slug, published: true },
+  // Find by slug first, then by id
+  const project = await prisma.project.findFirst({
+    where: {
+      published: true,
+      OR: [
+        { slug },
+        { id: slug },
+      ],
+    },
   });
 
   if (!project) {

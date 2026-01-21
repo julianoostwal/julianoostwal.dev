@@ -21,6 +21,7 @@ interface Project {
   technologies: string[];
   featured: boolean;
   published: boolean;
+  noIndex: boolean;
   sortOrder: number;
 }
 
@@ -42,23 +43,10 @@ export default function ProjectForm({ project }: ProjectFormProps) {
     technologies: project?.technologies.join(", ") || "",
     featured: project?.featured || false,
     published: project?.published || false,
+    noIndex: project?.noIndex || false,
     sortOrder: project?.sortOrder || 0,
   });
 
-  function generateSlug(title: string) {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
-  }
-
-  function handleTitleChange(value: string) {
-    setFormData((prev) => ({
-      ...prev,
-      title: value,
-      slug: prev.slug || generateSlug(value),
-    }));
-  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -108,7 +96,7 @@ export default function ProjectForm({ project }: ProjectFormProps) {
               <Input
                 label="Title"
                 value={formData.title}
-                onChange={(e) => handleTitleChange(e.target.value)}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 isRequired
                 variant="bordered"
               />
@@ -116,9 +104,9 @@ export default function ProjectForm({ project }: ProjectFormProps) {
                 label="Slug"
                 value={formData.slug}
                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                isRequired
                 variant="bordered"
-                description="URL-friendly identifier"
+                placeholder={project ? undefined : "Leave empty to auto-generate from ID"}
+                description={project ? "URL identifier" : "Leave empty to use database ID"}
               />
               <Textarea
                 label="Description"
@@ -167,17 +155,27 @@ export default function ProjectForm({ project }: ProjectFormProps) {
             <CardBody className="space-y-6 p-6">
               <h3 className="font-semibold text-lg">Publish</h3>
               <div className="flex items-center justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Published</span>
+                <span className="text-muted-foreground">Published</span>
                 <Switch
                   isSelected={formData.published}
                   onValueChange={(value) => setFormData({ ...formData, published: value })}
                 />
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Featured</span>
+                <span className="text-muted-foreground">Featured</span>
                 <Switch
                   isSelected={formData.featured}
                   onValueChange={(value) => setFormData({ ...formData, featured: value })}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-muted-foreground">No Index</span>
+                  <p className="text-xs text-muted-foreground">Hide from search engines (for client projects)</p>
+                </div>
+                <Switch
+                  isSelected={formData.noIndex}
+                  onValueChange={(value) => setFormData({ ...formData, noIndex: value })}
                 />
               </div>
               <Input

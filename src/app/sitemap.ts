@@ -32,14 +32,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Dynamic project pages
+  // Dynamic project pages (exclude noIndex projects from sitemap)
   const projects = await prisma.project.findMany({
-    where: { published: true },
-    select: { slug: true, updatedAt: true },
+    where: { published: true, noIndex: false },
+    select: { slug: true, id: true, updatedAt: true },
   });
 
   const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug}`,
+    url: `${baseUrl}/projects/${project.slug || project.id}`,
     lastModified: project.updatedAt,
     changeFrequency: "monthly",
     priority: 0.6,

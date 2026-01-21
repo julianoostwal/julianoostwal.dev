@@ -38,13 +38,19 @@ export async function GET(request: NextRequest) {
         technologies: true,
         featured: true,
         published: isAdmin,
+        noIndex: isAdmin,
         sortOrder: isAdmin,
         createdAt: true,
         updatedAt: true,
       },
     });
 
-    return NextResponse.json(projects);
+    const projectsWithSlug = projects.map((p) => ({
+      ...p,
+      slug: p.slug || p.id,
+    }));
+
+    return NextResponse.json(projectsWithSlug);
   } catch (error) {
     console.error("Get projects error:", error);
     return NextResponse.json(
@@ -78,33 +84,36 @@ export async function POST(request: NextRequest) {
       technologies,
       featured,
       published,
+      noIndex,
       sortOrder,
     } = body;
 
     // Validate required fields
-    if (!title || !slug) {
+    if (!title) {
       return NextResponse.json(
-        { error: "Title and slug are required" },
+        { error: "Title is required" },
         { status: 400 }
       );
     }
 
-    // Check for duplicate slug
-    const existingProject = await prisma.project.findUnique({
-      where: { slug },
-    });
+    // Check for duplicate slug if provided
+    if (slug) {
+      const existingProject = await prisma.project.findUnique({
+        where: { slug },
+      });
 
-    if (existingProject) {
-      return NextResponse.json(
-        { error: "A project with this slug already exists" },
-        { status: 409 }
-      );
+      if (existingProject) {
+        return NextResponse.json(
+          { error: "A project with this slug already exists" },
+          { status: 409 }
+        );
+      }
     }
 
     const project = await prisma.project.create({
       data: {
         title,
-        slug,
+        slug: slug || null,
         description,
         content,
         imageUrl,
@@ -113,12 +122,16 @@ export async function POST(request: NextRequest) {
         technologies: technologies || [],
         featured: featured || false,
         published: published || false,
+        noIndex: noIndex || false,
         sortOrder: sortOrder || 0,
         authorId: session.userId,
       },
     });
 
-    return NextResponse.json(project, { status: 201 });
+    return NextResponse.json({
+      ...project,
+      slug: project.slug || project.id,
+    }, { status: 201 });
   } catch (error) {
     console.error("Create project error:", error);
     return NextResponse.json(

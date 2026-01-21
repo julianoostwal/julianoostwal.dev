@@ -30,7 +30,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    return NextResponse.json(project);
+    return NextResponse.json({
+      ...project,
+      slug: project.slug || project.id,
+    });
   } catch (error) {
     console.error("Get project error:", error);
     return NextResponse.json(
@@ -65,6 +68,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       technologies,
       featured,
       published,
+      noIndex,
       sortOrder,
     } = body;
 
@@ -98,7 +102,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       where: { id },
       data: {
         ...(title !== undefined && { title }),
-        ...(slug !== undefined && { slug }),
+        ...(slug !== undefined && { slug: slug || null }),
         ...(description !== undefined && { description }),
         ...(content !== undefined && { content }),
         ...(imageUrl !== undefined && { imageUrl }),
@@ -107,11 +111,15 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         ...(technologies !== undefined && { technologies }),
         ...(featured !== undefined && { featured }),
         ...(published !== undefined && { published }),
+        ...(noIndex !== undefined && { noIndex }),
         ...(sortOrder !== undefined && { sortOrder }),
       },
     });
 
-    return NextResponse.json(project);
+    return NextResponse.json({
+      ...project,
+      slug: project.slug || project.id,
+    });
   } catch (error) {
     console.error("Update project error:", error);
     return NextResponse.json(

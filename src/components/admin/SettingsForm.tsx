@@ -123,8 +123,8 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
             value={formData.jobTitle}
             onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
             variant="bordered"
-            description="Used in SEO and structured data (e.g. Front-End Developer)"
-            placeholder="Front-End Developer"
+            description="Used in SEO and structured data (e.g. Full-Stack Developer)"
+            placeholder="Full-Stack Developer"
           />
           <Input
             label="Contact Email"

@@ -62,10 +62,6 @@ export default function ContactForm({ contactEmail }: ContactFormProps) {
         </a>{" "}
         or through this form.
       </p>
-      <p className="mt-2 text-sm text-muted-foreground">
-        For spam prevention and to reply, I store your message and minimal technical metadata
-        (like an anonymized IP and user-agent). I don’t store your full IP address.
-      </p>
 
       <form className="mt-6 flex flex-col" onSubmit={handleSubmit}>
         <div

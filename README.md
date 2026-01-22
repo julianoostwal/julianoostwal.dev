@@ -66,7 +66,7 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 ### Default Admin Credentials
 
 After seeding the database:
-- **Email**: info@julianoostwal.dev
+- **Email**: admin@example.com
 - **Password**: Admin123!
 
 ⚠️ **Change these credentials immediately after first login!**

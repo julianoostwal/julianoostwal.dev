@@ -71,6 +71,11 @@ After seeding the database:
 
 ⚠️ **Change these credentials immediately after first login!**
 
+#### Private seed (optional)
+
+If you want to seed with your own private/real data, create `prisma/seed.local.ts` (it’s gitignored).  
+It should export `default async function (prismaClient) { ... }` (or a named `seed` export).
+
 ## 📜 Scripts
 
 | Command | Description |

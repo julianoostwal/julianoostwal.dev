@@ -11,7 +11,7 @@ import { IoSunny } from "react-icons/io5";
 
 import { motion, type Variants } from "framer-motion";
 
-export default function Navbar() {
+export default function Navbar({ siteName }: { siteName: string }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -43,8 +43,8 @@ export default function Navbar() {
         <nav className="backdrop-blur-lg sticky top-0 z-20">
             <div className="container flex flex-wrap items-center justify-between mx-auto py-4">
                 <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                    {/* <Image src="/logo.png" className="rounded-full" alt="Julian Oostwal Logo" width={32} height={32} /> */}
-                    <span className="self-center text-2xl font-semibold whitespace-nowrap">Julian Oostwal</span>
+                    {/* <Image src="/logo.png" className="rounded-full" alt={`${siteName} Logo`} width={32} height={32} /> */}
+                    <span className="self-center text-2xl font-semibold whitespace-nowrap">{siteName}</span>
                 </Link>
                 <button onClick={toggleMenu} type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-gray-200 dark:text-gray-40</button>0 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded={isMenuOpen ? "true" : "false"}>
                     <span className="sr-only">Open main menu</span>
@@ -73,4 +73,3 @@ export default function Navbar() {
         </nav>
     )
 }
-

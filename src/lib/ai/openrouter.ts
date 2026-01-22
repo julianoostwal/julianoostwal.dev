@@ -39,7 +39,7 @@ export async function generateContactReplySuggestion(input: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
       "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "http://localhost",
-      "X-Title": "julianoostwal.dev admin",
+      "X-Title": process.env.OPENROUTER_APP_TITLE || "Portfolio admin",
     },
     body: JSON.stringify({
       model,
@@ -62,4 +62,3 @@ export async function generateContactReplySuggestion(input: {
 
   return { reply: content, model };
 }
-

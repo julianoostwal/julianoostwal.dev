@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/Footer";
 import Script from "next/script";
 import { generateSiteMetadata, generatePersonSchema, generateWebsiteSchema, viewport as siteViewport } from "@/lib/seo";
+import { getSiteSettings } from "@/lib/site-settings";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -46,6 +47,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  return <RootLayoutInner>{children}</RootLayoutInner>;
+}
+
+async function RootLayoutInner({ children }: { children: React.ReactNode }) {
+  const settings = await getSiteSettings();
+  const siteName = settings?.siteName?.trim() || "Portfolio";
+  const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_ID?.trim() || "";
+
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
@@ -53,26 +62,29 @@ export default function RootLayout({
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <JsonLdSchemas />
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-MW3W8MG2QN"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-MW3W8MG2QN');
-          `}
-        </Script>
+        {googleAnalyticsId ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${googleAnalyticsId}');
+              `}
+            </Script>
+          </>
+        ) : null}
       </head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <Providers>
-            <Navbar />
+            <Navbar siteName={siteName} />
             {children}
-            <Footer />
+            <Footer siteName={siteName} />
             <Toaster />
           </Providers>
         </ThemeProvider>

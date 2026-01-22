@@ -1,22 +1,7 @@
 import { Metadata, Viewport } from "next";
-import { prisma } from "@/lib/db/prisma";
-import { cache } from "react";
+import { getSiteSettings } from "@/lib/site-settings";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
-const getSiteSettings = cache(async () => {
-  return prisma.siteSettings.findUnique({
-    where: { id: "default" },
-    select: {
-      siteName: true,
-      siteDescription: true,
-      jobTitle: true,
-      seoKeywords: true,
-      socialLinks: true,
-      knowsAbout: true,
-    },
-  });
-});
 
 interface GenerateMetadataOptions {
   title?: string;

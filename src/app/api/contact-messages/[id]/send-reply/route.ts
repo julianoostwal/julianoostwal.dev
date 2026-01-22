@@ -44,7 +44,7 @@ export async function POST(
   });
 
   const fromEmail = settings?.contactEmail;
-  const fromName = settings?.siteName;
+  const fromName = settings?.siteName?.trim() || "Portfolio";
 
   if (!fromEmail?.trim()) {
     return Response.json(
@@ -75,7 +75,7 @@ export async function POST(
       <p>${escapeHtml(replyBody).replace(/\n/g, "<br>")}</p>
       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0">
       <p style="color:#6b7280;font-size:12px">
-        Replying to your message sent via julianoostwal.dev contact form.
+        Replying to your message sent via ${escapeHtml(fromName)} contact form.
       </p>
     </div>
   `;

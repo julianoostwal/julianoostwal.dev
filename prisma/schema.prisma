@@ -1,4 +1,4 @@
-// Prisma Schema for Julian Oostwal Portfolio
+// Prisma Schema for Portfolio
 // Database: PostgreSQL
 
 generator client {
@@ -71,7 +71,7 @@ model Project {
 
 model SiteSettings {
   id          String   @id @default("default")
-  siteName    String   @default("Julian Oostwal") @map("site_name")
+  siteName    String   @default("Portfolio") @map("site_name")
   siteDescription String? @map("site_description") @db.Text
   jobTitle    String?  @map("job_title")
   heroTitle   String?  @map("hero_title")

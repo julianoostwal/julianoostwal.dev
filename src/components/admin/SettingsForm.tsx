@@ -145,7 +145,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
             value={formData.heroTitle}
             onChange={(e) => setFormData({ ...formData, heroTitle: e.target.value })}
             variant="bordered"
-            placeholder="Hi, I'm Julian Oostwal"
+            placeholder="Hi, I'm Your Name"
           />
           <Textarea
             label="Hero Subtitle"
@@ -167,7 +167,7 @@ export default function SettingsForm({ settings }: SettingsFormProps) {
             onChange={(e) => setFormData({ ...formData, aboutContent: e.target.value })}
             variant="bordered"
             rows={8}
-            description='Content for the about page. You can use {{age:YYYY-MM-DD}} (e.g. {{age:2007-06-29}}).'
+            description='Content for the about page. You can use {{age:YYYY-MM-DD}} (e.g. {{age:2000-01-01}}).'
           />
         </CardBody>
       </Card>

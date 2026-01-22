@@ -29,6 +29,11 @@ yarn-error.log*
 .env*.local
 .env
 
+# local prisma seed (private)
+prisma/seed.local.ts
+prisma/seed.local.js
+prisma/seed.private.ts
+
 # vercel
 .vercel
 

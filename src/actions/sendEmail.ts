@@ -187,6 +187,12 @@ async function sendEmail(
     options: SendEmailOptions = {}
 ) {
     try {
+        const settings = await prisma.siteSettings.findUnique({
+            where: { id: "default" },
+            select: { siteName: true },
+        });
+        const siteName = settings?.siteName?.trim() || "Portfolio";
+
         // Input validation
         if (!process.env.MAILERSEND_API_KEY) {
             throw new Error("MAILERSEND_API_KEY is not configured");
@@ -216,8 +222,8 @@ async function sendEmail(
                 <html lang="nl">
                     <head>
                         <meta charset="utf-8">
-                        <title>julianoostwal.dev</title>
-                        <meta name="description" content="julianoostwal.dev">
+                        <title>${siteName.replace(/[<>]/g, "")}</title>
+                        <meta name="description" content="${siteName.replace(/[<>]/g, "")}">
                         <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
                         <style>
                             body {
@@ -271,7 +277,7 @@ async function sendEmail(
                                 <p>${data.message.replace(/[<>]/g, '').replace(/\n/g, '<br>')}</p>
                             </div>
                             <div class="footer">
-                                <p>julianoostwal.dev</p>
+                                <p>${siteName.replace(/[<>]/g, "")}</p>
                             </div>
                         </div>
                     </body>

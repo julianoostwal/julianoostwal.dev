@@ -52,7 +52,7 @@ CREATE TABLE "projects" (
 -- CreateTable
 CREATE TABLE "site_settings" (
     "id" TEXT NOT NULL DEFAULT 'default',
-    "site_name" TEXT NOT NULL DEFAULT 'Julian Oostwal',
+    "site_name" TEXT NOT NULL DEFAULT 'Portfolio',
     "site_description" TEXT,
     "hero_title" TEXT,
     "hero_subtitle" TEXT,

@@ -4,11 +4,11 @@ import { useTheme } from "next-themes";
 import { useEffect, useMemo, useState } from "react";
 import {
   Cloud,
-  fetchSimpleIcons,
   ICloud,
   renderSimpleIcon,
   SimpleIcon,
 } from "react-icon-cloud";
+import { fetchSimpleIcons } from "@/lib/fetchSimpleIcons";
 
 export const cloudProps: Omit<ICloud, "children"> = {
   containerProps: {

@@ -75,6 +75,11 @@ async function RootLayoutInner({ children }: { children: React.ReactNode }) {
             </Script>
           </>
         ) : null}
+        <Script
+          src="https://analytics.quixly.dev/script.js"
+          data-website-id="94342ac2-a6f4-45fa-a676-a87accd25da7"
+          strategy="afterInteractive"
+        />
       </head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>

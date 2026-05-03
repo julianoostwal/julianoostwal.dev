@@ -47,7 +47,7 @@ export default function ContactForm({ contactEmail }: ContactFormProps) {
 
   return (
     <motion.section
-      className="text-center max-w-xl mx-auto -mt-16"
+      className="text-center max-w-xl mx-auto"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.3 }}

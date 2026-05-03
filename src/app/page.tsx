@@ -19,9 +19,9 @@ export default async function HomePage() {
   const socialLinks = settings.socialLinks as Record<string, string> | null;
 
   return (
-    <main className="min-h-screen flex justify-center items-center">
+    <main className="min-h-[calc(100vh-4.5rem)] min-h-[calc(100dvh-4.5rem)] flex justify-center items-center px-4 py-8">
       <div className="container">
-        <div className="flex flex-wrap gap-6 justify-evenly items-center -mt-16">
+        <div className="flex flex-wrap gap-6 justify-evenly items-center">
           <div className="max-w-2xl gap-2 flex flex-col">
             <h1 className="text-2xl font-bold">{settings.heroTitle}</h1>
             <p>{settings.heroSubtitle}</p>

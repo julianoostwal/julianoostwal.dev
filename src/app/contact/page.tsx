@@ -25,7 +25,7 @@ export default async function ContactPage() {
   }
 
   return (
-    <main className="min-h-screen flex justify-center items-center p-4">
+    <main className="min-h-[calc(100vh-4.5rem)] min-h-[calc(100dvh-4.5rem)] flex justify-center items-center p-4 py-8">
       <ContactForm contactEmail={settings.contactEmail} />
     </main>
   );

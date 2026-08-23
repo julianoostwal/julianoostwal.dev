@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       .replace(/[^a-z0-9.-]/g, "-")
       .replace(/-+/g, "-");
 
-    // Upload to SeaweedFS
+    // Upload to object storage
     const url = await uploadFile(buffer, sanitizedName, file.type);
 
     return NextResponse.json({

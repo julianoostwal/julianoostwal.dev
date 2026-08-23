@@ -9,7 +9,7 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 - 📊 **Admin Panel** - Full CMS for managing projects, and settings
 - 📥 **Contact Inbox** - Admin inbox for contact messages (read/unread, spam flags, reply)
 - 📦 **Database** - PostgreSQL with Prisma ORM
-- 🗄️ **File Storage** - SeaweedFS (S3-compatible) for image uploads
+- 🗄️ **File Storage** - S3 private bucket for image uploads
 - 🔍 **SEO Optimized** - Sitemap, robots.txt, structured data, Open Graph
 - 📱 **Responsive** - Mobile-first design
 - ⚡ **Performance** - Turbopack, optimized images, lazy loading
@@ -21,7 +21,7 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 - **Styling**: Tailwind CSS 4 + HeroUI
 - **Database**: PostgreSQL + Prisma
 - **Auth**: JWT (jose) + bcryptjs
-- **Storage**: SeaweedFS
+- **Storage**: S3
 - **Animations**: Framer Motion
 
 ## 🚀 Getting Started
@@ -31,7 +31,7 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 - Node.js 24+
 - pnpm 10+
 - PostgreSQL database
-- SeaweedFS S3 storage (https://github.com/seaweedfs/seaweedfs)
+- An S3-compatible bucket 
 
 ### Setup
 
@@ -111,7 +111,7 @@ src/
 └── lib/
     ├── auth/            # Authentication utilities
     ├── db/              # Database client
-    ├── storage/         # S3 client (SeaweedFS)
+    ├── storage/         # S3 client (Backblaze B2)
     └── seo.ts           # SEO utilities
 ```
 

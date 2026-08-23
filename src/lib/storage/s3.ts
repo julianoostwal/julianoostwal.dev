@@ -1,10 +1,8 @@
 import {
   S3Client,
   PutObjectCommand,
+  GetObjectCommand,
   DeleteObjectCommand,
-  HeadBucketCommand,
-  CreateBucketCommand,
-  PutBucketPolicyCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -12,7 +10,13 @@ const globalForS3 = globalThis as unknown as {
   s3Client: S3Client | undefined;
 };
 
-const BUCKET_NAME = process.env.S3_BUCKET || "portfolio";
+const BUCKET_NAME = process.env.S3_BUCKET!;
+
+/** Prefix every uploaded object shares. Also the only prefix the proxy will serve. */
+export const UPLOAD_PREFIX = "uploads/";
+
+/** Public path the app serves objects on. Stored in the database, never a raw S3 URL. */
+export const FILE_ROUTE = "/api/files/";
 
 export const s3Client =
   globalForS3.s3Client ??
@@ -23,43 +27,39 @@ export const s3Client =
       accessKeyId: process.env.S3_ACCESS_KEY!,
       secretAccessKey: process.env.S3_SECRET_KEY!,
     },
-    forcePathStyle: true,
+    forcePathStyle: process.env.S3_FORCE_PATH_STYLE === "true",
   });
 
 if (process.env.NODE_ENV !== "production") globalForS3.s3Client = s3Client;
 
-export async function ensureBucket(): Promise<void> {
-  try {
-    await s3Client.send(new HeadBucketCommand({ Bucket: BUCKET_NAME }));
-  } catch (error: unknown) {
-    const e = error as { name?: string };
-    if (e.name === "NotFound" || e.name === "NoSuchBucket") {
-      // Create bucket
-      await s3Client.send(new CreateBucketCommand({ Bucket: BUCKET_NAME }));
+/**
+ * Turn whatever is stored in the database into a bare object key.
+ *
+ * Accepts the current form ("/api/files/uploads/123-foo.webp"), a bare key
+ * ("uploads/123-foo.webp"), and the legacy public form left over from the
+ * SeaweedFS era ("https://host/bucket/uploads/123-foo.webp").
+ */
+export function toObjectKey(stored: string): string | null {
+  let path = stored;
 
-      // Set public read policy
-      const policy = {
-        Version: "2012-10-17",
-        Statement: [
-          {
-            Effect: "Allow",
-            Principal: "*",
-            Action: ["s3:GetObject"],
-            Resource: [`arn:aws:s3:::${BUCKET_NAME}/*`],
-          },
-        ],
-      };
-
-      await s3Client.send(
-        new PutBucketPolicyCommand({
-          Bucket: BUCKET_NAME,
-          Policy: JSON.stringify(policy),
-        })
-      );
-    } else {
-      throw error;
+  if (/^https?:\/\//i.test(stored)) {
+    try {
+      path = new URL(stored).pathname;
+    } catch {
+      return null;
     }
   }
+
+  path = path.replace(/^\/+/, "");
+
+  if (path.startsWith("api/files/")) path = path.slice("api/files/".length);
+  // Legacy path-style URLs carried the bucket as the first segment.
+  if (path.startsWith(`${BUCKET_NAME}/`)) path = path.slice(BUCKET_NAME.length + 1);
+
+  if (!path.startsWith(UPLOAD_PREFIX)) return null;
+  if (path.includes("..")) return null;
+
+  return path;
 }
 
 export async function uploadFile(
@@ -67,9 +67,7 @@ export async function uploadFile(
   fileName: string,
   contentType: string
 ): Promise<string> {
-  await ensureBucket();
-
-  const objectKey = `uploads/${Date.now()}-${fileName}`;
+  const objectKey = `${UPLOAD_PREFIX}${Date.now()}-${fileName}`;
 
   await s3Client.send(
     new PutObjectCommand({
@@ -82,44 +80,58 @@ export async function uploadFile(
     })
   );
 
-  // Return the public URL
-  const publicUrl = process.env.S3_ENDPOINT!;
-
-  return `${publicUrl}/${BUCKET_NAME}/${objectKey}`;
+  return `${FILE_ROUTE}${objectKey}`;
 }
 
-export async function deleteFile(fileUrl: string): Promise<void> {
+/** Fetch an object for the proxy route. Returns null when it does not exist. */
+export async function getObject(objectKey: string) {
   try {
-    // Extract object key from URL
-    const url = new URL(fileUrl);
-    const pathParts = url.pathname.split("/");
-    // Path format: /bucket/uploads/timestamp-filename
-    const objectKey = pathParts.slice(2).join("/");
-
-    await s3Client.send(
-      new DeleteObjectCommand({
-        Bucket: BUCKET_NAME,
-        Key: objectKey,
-      })
+    const result = await s3Client.send(
+      new GetObjectCommand({ Bucket: BUCKET_NAME, Key: objectKey })
     );
-  } catch (error) {
-    console.error("Failed to delete file from S3:", error);
+
+    if (!result.Body) return null;
+
+    return {
+      body: result.Body.transformToWebStream(),
+      contentType: result.ContentType ?? "application/octet-stream",
+      contentLength: result.ContentLength,
+      etag: result.ETag,
+    };
+  } catch (error: unknown) {
+    const e = error as { name?: string; $metadata?: { httpStatusCode?: number } };
+    if (e.name === "NoSuchKey" || e.$metadata?.httpStatusCode === 404) return null;
     throw error;
   }
 }
 
+export async function deleteFile(storedUrl: string): Promise<void> {
+  const objectKey = toObjectKey(storedUrl);
+
+  if (!objectKey) {
+    console.warn("Refusing to delete unrecognised storage reference:", storedUrl);
+    return;
+  }
+
+  await s3Client.send(
+    new DeleteObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: objectKey,
+    })
+  );
+}
+
 export async function getPresignedUploadUrl(
   fileName: string,
-  _contentType: string,
+  contentType: string,
   expirySeconds = 3600
 ): Promise<{ url: string; objectKey: string }> {
-  await ensureBucket();
-
-  const objectKey = `uploads/${Date.now()}-${fileName}`;
+  const objectKey = `${UPLOAD_PREFIX}${Date.now()}-${fileName}`;
 
   const command = new PutObjectCommand({
     Bucket: BUCKET_NAME,
     Key: objectKey,
+    ContentType: contentType,
   });
 
   const url = await getSignedUrl(s3Client, command, {
@@ -129,9 +141,8 @@ export async function getPresignedUploadUrl(
   return { url, objectKey };
 }
 
-export async function getPublicUrl(objectKey: string): Promise<string> {
-  const publicUrl = process.env.S3_ENDPOINT!;
-  return `${publicUrl}/${BUCKET_NAME}/${objectKey}`;
+export function getPublicUrl(objectKey: string): string {
+  return `${FILE_ROUTE}${objectKey}`;
 }
 
 export { BUCKET_NAME };

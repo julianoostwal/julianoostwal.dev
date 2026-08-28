@@ -14,7 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export const revalidate = 300; // Revalidate every 5 minutes
+// Backstop only - the projects API revalidates this page on every write.
+export const revalidate = 3600;
 
 export default async function Projects() {
   const projects = await prisma.project.findMany({

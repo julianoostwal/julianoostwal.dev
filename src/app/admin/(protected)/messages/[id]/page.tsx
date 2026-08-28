@@ -2,8 +2,6 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import ContactMessageDetail from "@/components/admin/ContactMessageDetail";
 
-export const revalidate = 0;
-
 export default async function AdminMessageDetailPage({
   params,
 }: {

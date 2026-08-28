@@ -12,6 +12,9 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Backstop only - the projects API revalidates this page on every write.
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   const projects = await prisma.project.findMany({
     where: { published: true },

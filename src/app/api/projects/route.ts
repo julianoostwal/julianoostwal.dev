@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { getSession } from "@/lib/auth";
+import { revalidateProjects } from "@/lib/revalidate";
 
 // GET /api/projects - Get all projects (public: only published, admin: all)
 export async function GET(request: NextRequest) {
@@ -127,6 +128,8 @@ export async function POST(request: NextRequest) {
         authorId: session.userId,
       },
     });
+
+    revalidateProjects(project.slug ?? project.id);
 
     return NextResponse.json({
       ...project,

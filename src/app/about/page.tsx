@@ -5,8 +5,8 @@ import { Link } from "@heroui/link";
 import type { Metadata } from "next";
 import { generateSiteMetadata } from "@/lib/seo";
 
-// Revalidate every 60 seconds
-export const revalidate = 60;
+// Backstop only - the settings API revalidates this page on save.
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSiteMetadata({

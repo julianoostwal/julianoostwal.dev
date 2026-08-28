@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import IconCloud from "@/components/IconCloud";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 
-// Revalidate every 60 seconds - updates from dashboard will show within 1 minute
-export const revalidate = 60;
+// Backstop only - the settings API revalidates this page on save.
+export const revalidate = 3600;
 
 export default async function HomePage() {
   const settings = await prisma.siteSettings.findUnique({

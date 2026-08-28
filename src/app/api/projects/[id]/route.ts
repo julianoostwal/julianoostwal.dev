@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { getSession } from "@/lib/auth";
+import { revalidateProjects } from "@/lib/revalidate";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -116,6 +117,12 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       },
     });
 
+    // Also bust the old slug in case it changed.
+    revalidateProjects(
+      project.slug ?? project.id,
+      existingProject.slug ?? existingProject.id,
+    );
+
     return NextResponse.json({
       ...project,
       slug: project.slug || project.id,
@@ -156,6 +163,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     await prisma.project.delete({
       where: { id },
     });
+
+    revalidateProjects(existingProject.slug ?? existingProject.id);
 
     return NextResponse.json({ success: true });
   } catch (error) {

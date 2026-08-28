@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { getSession } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -54,6 +55,9 @@ export async function PUT(request: NextRequest) {
         ...(body.technologySlugs !== undefined && { technologySlugs: body.technologySlugs }),
       },
     });
+
+    // Settings feed the metadata of every page, so bust the whole tree.
+    revalidatePath("/", "layout");
 
     return NextResponse.json(settings);
   } catch (error) {

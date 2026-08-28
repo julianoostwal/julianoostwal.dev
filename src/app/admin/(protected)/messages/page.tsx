@@ -1,8 +1,6 @@
 import { prisma } from "@/lib/db/prisma";
 import ContactMessagesTable from "@/components/admin/ContactMessagesTable";
 
-export const revalidate = 0;
-
 export default async function AdminMessagesPage({
   searchParams,
 }: {

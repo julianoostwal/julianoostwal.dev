@@ -24,8 +24,6 @@ export default function ContactForm({ contactEmail }: ContactFormProps) {
     setLoading(true);
 
     const { error } = await sendEmail(
-      contactEmail,
-      { email: `noreply@${contactEmail.split("@")[1]}`, name: "Portfolio Contact" },
       subject || "New message from portfolio",
       { email, name, message },
       { honeypot: website }

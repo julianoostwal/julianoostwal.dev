@@ -1,10 +1,6 @@
 import { prisma } from "@/lib/db/prisma";
 import { requireAdmin } from "@/lib/auth/requireAdmin";
-import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
-
-const mailerSend = new MailerSend({
-  apiKey: process.env.MAILERSEND_API_KEY!,
-});
+import { getMailClient, getMailFrom } from "@/lib/email/client";
 
 function escapeHtml(input: string) {
   return input.replace(/[&<>"']/g, (c) => {
@@ -34,8 +30,11 @@ export async function POST(
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (!process.env.MAILERSEND_API_KEY) {
-    return Response.json({ error: "MAILERSEND_API_KEY is not configured" }, { status: 500 });
+  if (!process.env.MAIL_API_KEY || !process.env.MAIL_BASE_URL || !process.env.MAIL_FROM) {
+    return Response.json(
+      { error: "MAIL_API_KEY / MAIL_BASE_URL / MAIL_FROM is not configured" },
+      { status: 500 }
+    );
   }
 
   const settings = await prisma.siteSettings.findUnique({
@@ -43,15 +42,8 @@ export async function POST(
     select: { contactEmail: true, siteName: true },
   });
 
-  const fromEmail = settings?.contactEmail;
   const fromName = settings?.siteName?.trim() || "Portfolio";
-
-  if (!fromEmail?.trim()) {
-    return Response.json(
-      { error: "No sender email configured" },
-      { status: 500 }
-    );
-  }
+  const replyTo = settings?.contactEmail?.trim() || undefined;
 
   const { id } = await params;
   const message = await prisma.contactMessage.findUnique({ where: { id } });
@@ -67,9 +59,6 @@ export async function POST(
     return Response.json({ error: "Subject and body are required" }, { status: 400 });
   }
 
-  const sentFrom = new Sender(fromEmail, fromName);
-  const recipients = [new Recipient(message.email, message.name)];
-
   const htmlBody = `
     <div style="font-family:Arial,sans-serif;line-height:1.6">
       <p>${escapeHtml(replyBody).replace(/\n/g, "<br>")}</p>
@@ -81,15 +70,15 @@ export async function POST(
   `;
 
   try {
-    const emailParams = new EmailParams()
-      .setFrom(sentFrom)
-      .setTo(recipients)
-      .setSubject(subject)
-      .setHtml(htmlBody);
-
-    const response = await mailerSend.email.send(emailParams);
-    if (response.statusCode !== 202) {
-      throw new Error(`Failed to send email: ${response.statusCode}`);
+    const { error: sendError } = await getMailClient().emails.send({
+      from: getMailFrom(fromName),
+      to: [`${message.name.replace(/[<>"]/g, "")} <${message.email}>`],
+      replyTo,
+      subject,
+      html: htmlBody,
+    });
+    if (sendError) {
+      throw new Error(`Failed to send email: ${sendError.message}`);
     }
 
     await prisma.contactMessage.update({

@@ -1,23 +1,14 @@
 "use server";
-import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/db/prisma";
+import { getMailClient, getMailFrom } from "@/lib/email/client";
 import { createHmac } from "crypto";
 import { isIP } from "net";
-
-const mailerSend = new MailerSend({
-    apiKey: process.env.MAILERSEND_API_KEY!,
-});
 
 interface EmailData {
     email: string;
     name: string;
     message: string;
-}
-
-interface FromData {
-    email: string;
-    name: string;
 }
 
 interface SendEmailOptions {
@@ -180,8 +171,6 @@ function assessSpam(input: { name: string; email: string; subject: string; messa
 }
 
 async function sendEmail(
-    to: string,
-    from: FromData,
     subject: string,
     data: EmailData,
     options: SendEmailOptions = {}
@@ -189,17 +178,21 @@ async function sendEmail(
     try {
         const settings = await prisma.siteSettings.findUnique({
             where: { id: "default" },
-            select: { siteName: true },
+            select: { siteName: true, contactEmail: true },
         });
         const siteName = settings?.siteName?.trim() || "Portfolio";
 
-        // Input validation
-        if (!process.env.MAILERSEND_API_KEY) {
-            throw new Error("MAILERSEND_API_KEY is not configured");
+        // Recipient comes from site settings, never from the client.
+        const to = settings?.contactEmail?.trim();
+        if (!to) {
+            throw new Error("No contact email configured");
         }
 
-        if (!to?.trim() || !from?.email?.trim() || !from?.name?.trim() || 
-                !subject?.trim() || !data?.email?.trim() || !data?.name?.trim() || 
+        const resend = getMailClient();
+        const from = getMailFrom(siteName);
+
+        // Input validation
+        if (!subject?.trim() || !data?.email?.trim() || !data?.name?.trim() ||
                 !data?.message?.trim()) {
             throw new Error("All fields are required and cannot be empty");
         }
@@ -210,14 +203,12 @@ async function sendEmail(
             throw new Error("Invalid email format");
         }
 
-        const sentFrom = new Sender(from.email, from.name);
-        const recipients = [new Recipient(to)];
-
-        const emailParams = new EmailParams()
-            .setFrom(sentFrom)
-            .setTo(recipients)
-            .setSubject(subject)
-            .setHtml(`
+        const { error: sendError } = await resend.emails.send({
+            from,
+            to: [to],
+            replyTo: data.email,
+            subject,
+            html: `
                 <!DOCTYPE html>
                 <html lang="nl">
                     <head>
@@ -282,12 +273,11 @@ async function sendEmail(
                         </div>
                     </body>
                 </html>
-            `);
+            `,
+        });
 
-        const response = await mailerSend.email.send(emailParams);
-        
-        if (response.statusCode !== 202) {
-            throw new Error(`Failed to send email: ${response.statusCode}`);
+        if (sendError) {
+            throw new Error(`Failed to send email: ${sendError.message}`);
         }
 
         // Store contact message for admin inbox (privacy: store anonymized IP + optional salted hash)

@@ -1,5 +1,6 @@
 import { Metadata, Viewport } from "next";
 import { getSiteSettings } from "@/lib/site-settings";
+import { quixly, showQuixly } from "@/lib/quixly";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -109,10 +110,9 @@ export async function generatePersonSchema() {
     url: baseUrl,
     image: `${baseUrl}/profile.jpg`,
     jobTitle: settings?.jobTitle?.trim() || "Full-Stack Developer",
-    worksFor: {
-      "@type": "Organization",
-      name: "Freelance",
-    },
+    worksFor: showQuixly(settings?.siteName)
+      ? { "@type": "Organization", name: quixly.name, url: quixly.url }
+      : { "@type": "Organization", name: "Freelance" },
     sameAs,
   };
 
@@ -135,43 +135,6 @@ export async function generateWebsiteSchema() {
     author: {
       "@type": "Person",
       name: settings?.siteName ?? "Portfolio",
-    },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${baseUrl}/projects?search={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
-  };
-}
-
-export function generateProjectSchema(project: {
-  title: string;
-  description: string;
-  slug: string;
-  imageUrl?: string;
-  liveUrl?: string;
-  technologies?: string[];
-  createdAt: Date;
-  authorName?: string;
-}) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: project.title,
-    description: project.description,
-    url: `${baseUrl}/projects/${project.slug}`,
-    image: project.imageUrl,
-    applicationCategory: "WebApplication",
-    operatingSystem: "Web Browser",
-    author: {
-      "@type": "Person",
-      name: project.authorName ?? "Portfolio",
-    },
-    datePublished: project.createdAt.toISOString(),
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
     },
   };
 }

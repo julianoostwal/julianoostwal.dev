@@ -83,29 +83,6 @@ Use {{age:YYYY-MM-DD}} to display a dynamic age based on birth date.`,
   console.log("✅ Site settings created");
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // Projects
-  // ─────────────────────────────────────────────────────────────────────────────
-  const projects = await Promise.all([
-    prisma.project.upsert({
-      where: { slug: "example-project" },
-      update: {},
-      create: {
-        title: "Example Project",
-        slug: "example-project",
-        description: "A brief description of your project.",
-        technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
-        featured: true,
-        published: true,
-        sortOrder: 1,
-        authorId: admin.id,
-      },
-    }),
-    // Add more projects as needed...
-  ]);
-
-  console.log("✅ Projects created:", projects.length);
-
-  // ─────────────────────────────────────────────────────────────────────────────
   // Summary
   // ─────────────────────────────────────────────────────────────────────────────
   console.log("\n🎉 Local seeding completed!\n");

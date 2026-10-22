@@ -1,14 +1,9 @@
 import { MetadataRoute } from "next";
-import { prisma } from "@/lib/db/prisma";
 
-// Backstop for the on-demand revalidation done by the admin API routes.
-export const revalidate = 3600;
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL!;
 
-  // Static pages
-  const staticPages: MetadataRoute.Sitemap = [
+  return [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -22,31 +17,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/projects`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.7,
     },
   ];
-
-  // Dynamic project pages (exclude noIndex projects from sitemap)
-  const projects = await prisma.project.findMany({
-    where: { published: true, noIndex: false },
-    select: { slug: true, id: true, updatedAt: true },
-  });
-
-  const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${baseUrl}/projects/${project.slug || project.id}`,
-    lastModified: project.updatedAt,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
-
-  return [...staticPages, ...projectPages];
 }

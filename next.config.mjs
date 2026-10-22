@@ -1,18 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "9000",
-      },
-    ],
+  // Projects moved to the Quixly portfolio; keep old links working.
+  async redirects() {
+    return [
+      { source: "/projects", destination: "https://quixly.dev/en/portfolio", permanent: true },
+      { source: "/projects/:path*", destination: "https://quixly.dev/en/portfolio", permanent: true },
+    ];
   },
   // Disable powered by header
   poweredByHeader: false,

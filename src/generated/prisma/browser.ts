@@ -28,11 +28,6 @@ export type User = Prisma.UserModel
  */
 export type Session = Prisma.SessionModel
 /**
- * Model Project
- * 
- */
-export type Project = Prisma.ProjectModel
-/**
  * Model SiteSettings
  * 
  */

@@ -1,15 +1,14 @@
 # Julian Oostwal Portfolio
 
-A modern, full-stack portfolio website built with Next.js 16, featuring an admin panel, custom authentication, and cloud storage integration.
+A modern, full-stack portfolio website built with Next.js 16, featuring an admin panel and custom authentication. Projects are showcased in the [Quixly Development portfolio](https://quixly.dev/en/portfolio).
 
 ## ✨ Features
 
 - 🎨 **Modern UI** - Built with HeroUI and Tailwind CSS
 - 🔐 **Custom Auth** - JWT-based authentication with refresh tokens
-- 📊 **Admin Panel** - Full CMS for managing projects, and settings
+- 📊 **Admin Panel** - CMS for site content and settings
 - 📥 **Contact Inbox** - Admin inbox for contact messages (read/unread, spam flags, reply)
 - 📦 **Database** - PostgreSQL with Prisma ORM
-- 🗄️ **File Storage** - S3 private bucket for image uploads
 - 🔍 **SEO Optimized** - Sitemap, robots.txt, structured data, Open Graph
 - 📱 **Responsive** - Mobile-first design
 - ⚡ **Performance** - Turbopack, optimized images, lazy loading
@@ -21,7 +20,6 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 - **Styling**: Tailwind CSS 4 + HeroUI
 - **Database**: PostgreSQL + Prisma
 - **Auth**: JWT (jose) + bcryptjs
-- **Storage**: S3
 - **Animations**: Framer Motion
 
 ## 🚀 Getting Started
@@ -31,7 +29,6 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 - Node.js 24+
 - pnpm 10+
 - PostgreSQL database
-- An S3-compatible bucket 
 
 ### Setup
 
@@ -45,7 +42,7 @@ A modern, full-stack portfolio website built with Next.js 16, featuring an admin
 2. **Configure environment**
    ```bash
    cp .env.example .env
-   # Edit .env with your database and S3 credentials
+   # Edit .env with your database and mail credentials
    ```
 
 3. **Setup database**
@@ -98,20 +95,16 @@ src/
 │   ├── api/             # API routes
 │   │   ├── auth/        # Authentication endpoints
 │   │   ├── contact-messages/ # Contact inbox endpoints
-│   │   ├── projects/    # Projects CRUD
-│   │   ├── settings/    # Site settings
-│   │   └── upload/      # File uploads
+│   │   └── settings/    # Site settings
 │   ├── about/           # About page
 │   ├── contact/         # Contact page
-│   └── projects/        # Projects page
-│   ├── page.tsx         # Home page
+│   └── page.tsx         # Home page
 ├── components/
 │   ├── admin/           # Admin components
 │   └── ui/              # Shared UI components
 └── lib/
     ├── auth/            # Authentication utilities
     ├── db/              # Database client
-    ├── storage/         # S3 client (Backblaze B2)
     └── seo.ts           # SEO utilities
 ```
 

@@ -4,6 +4,7 @@ import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
 import type { Metadata } from "next";
 import { generateSiteMetadata } from "@/lib/seo";
+import { quixly, showQuixly } from "@/lib/quixly";
 
 // Backstop only - the settings API revalidates this page on save.
 export const revalidate = 3600;
@@ -31,7 +32,7 @@ function parseContent(content: string): string {
 export default async function AboutPage() {
   const settings = await prisma.siteSettings.findUnique({
     where: { id: "default" },
-    select: { aboutContent: true, contactEmail: true },
+    select: { siteName: true, aboutContent: true, contactEmail: true },
   });
 
   if (!settings?.aboutContent) {
@@ -50,6 +51,34 @@ export default async function AboutPage() {
               {paragraph}
             </p>
           ))}
+          {showQuixly(settings.siteName) && (
+            <section className="my-12 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 md:p-8">
+              <h2 className="text-2xl font-bold mb-2">{quixly.name}</h2>
+              <p className="text-lg mb-6 text-gray-600 dark:text-gray-400">
+                Besides freelancing, I run my own company, {quixly.name}. {quixly.tagline} You work directly with
+                me as the developer: clear quotes, transparent pricing and no middlemen.
+              </p>
+              <div className="grid gap-4 md:grid-cols-3 mb-6">
+                {quixly.services.map((service) => (
+                  <div key={service.title}>
+                    <h3 className="font-semibold mb-1">{service.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{service.description}</p>
+                  </div>
+                ))}
+              </div>
+              <h3 className="font-semibold mb-2">Own products</h3>
+              <ul className="mb-6 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                {quixly.products.map((product) => (
+                  <li key={product.name}>
+                    <span className="font-medium text-foreground">{product.name}</span> &ndash; {product.description}
+                  </li>
+                ))}
+              </ul>
+              <Button as={Link} href={quixly.url} isExternal color="primary" variant="flat">
+                Visit quixly.dev
+              </Button>
+            </section>
+          )}
           <div className="text-center">
             <Button as={Link} href="/contact" size="lg" variant="ghost" color="primary">
               Contact me

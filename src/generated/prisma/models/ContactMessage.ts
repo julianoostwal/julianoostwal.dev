@@ -335,7 +335,7 @@ export type ContactMessageGroupByOutputType = {
   _max: ContactMessageMaxAggregateOutputType | null
 }
 
-type GetContactMessageGroupByPayload<T extends ContactMessageGroupByArgs> = Prisma.PrismaPromise<
+export type GetContactMessageGroupByPayload<T extends ContactMessageGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ContactMessageGroupByOutputType, T['by']> &
       {
@@ -809,8 +809,20 @@ export type ContactMessageCreatespamReasonsInput = {
   set: string[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type ContactMessageUpdatespamReasonsInput = {
@@ -1593,6 +1605,11 @@ export type ContactMessageFindManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Skip the first `n` ContactMessages.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ContactMessages.
+   */
   distinct?: Prisma.ContactMessageScalarFieldEnum | Prisma.ContactMessageScalarFieldEnum[]
 }
 

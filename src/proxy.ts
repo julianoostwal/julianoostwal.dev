@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyAccessToken } from "@/lib/auth/jwt";
-import { prisma } from "@/lib/db/prisma";
 
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -8,28 +7,6 @@ export default async function proxy(request: NextRequest) {
   // Skip for login page and API routes - these should always be accessible
   if (pathname === "/admin/login" || pathname.startsWith("/api/")) {
     return NextResponse.next();
-  }
-
-  // Check if this is a project page and add noindex header if needed
-  const projectMatch = pathname.match(/^\/projects\/([^/]+)$/);
-  if (projectMatch) {
-    const slugOrId = projectMatch[1];
-    
-    const project = await prisma.project.findFirst({
-      where: {
-        OR: [
-          { slug: slugOrId },
-          { id: slugOrId },
-        ],
-      },
-      select: { noIndex: true },
-    });
-    
-    if (project?.noIndex) {
-      const response = NextResponse.next();
-      response.headers.set("X-Robots-Tag", "noindex, nofollow");
-      return response;
-    }
   }
 
   // Protect admin routes (except login)
@@ -54,5 +31,5 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/projects/:path*"],
+  matcher: ["/admin/:path*"],
 };

@@ -10,7 +10,6 @@
  */
 export type * from './models/User'
 export type * from './models/Session'
-export type * from './models/Project'
 export type * from './models/SiteSettings'
 export type * from './models/ContactMessage'
 export type * from './commonInputTypes'

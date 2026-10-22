@@ -35,7 +35,7 @@ async function seedExampleData(prismaClient: PrismaClient) {
 
   const passwordHash = await hash(adminPassword, 12);
 
-  const admin = await prismaClient.user.upsert({
+  await prismaClient.user.upsert({
     where: { email: adminEmail },
     update: {},
     create: {
@@ -68,37 +68,6 @@ async function seedExampleData(prismaClient: PrismaClient) {
       technologySlugs: ["typescript", "react", "nextdotjs", "nodedotjs", "postgresql", "prisma"],
     },
   });
-
-  await Promise.all([
-    prismaClient.project.upsert({
-      where: { slug: "example-project-1" },
-      update: {},
-      create: {
-        title: "Example Project",
-        slug: "example-project-1",
-        description: "A sample project seeded by Prisma.",
-        technologies: ["Next.js", "TypeScript", "Prisma"],
-        featured: true,
-        published: true,
-        sortOrder: 1,
-        authorId: admin.id,
-      },
-    }),
-    prismaClient.project.upsert({
-      where: { slug: "example-project-2" },
-      update: {},
-      create: {
-        title: "Another Example Project",
-        slug: "example-project-2",
-        description: "A second sample project seeded by Prisma.",
-        technologies: ["PostgreSQL", "Tailwind CSS"],
-        featured: false,
-        published: true,
-        sortOrder: 2,
-        authorId: admin.id,
-      },
-    }),
-  ]);
 
   console.log("\n🎉 Seeding completed!\n");
   console.log("Admin credentials:");

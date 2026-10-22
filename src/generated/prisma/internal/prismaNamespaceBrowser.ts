@@ -53,7 +53,6 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Session: 'Session',
-  Project: 'Project',
   SiteSettings: 'SiteSettings',
   ContactMessage: 'ContactMessage'
 } as const
@@ -64,12 +63,12 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  * Enums
  */
 
-export const TransactionIsolationLevel = {
+export const TransactionIsolationLevel = runtime.makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
-} as const
+} as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
@@ -99,28 +98,6 @@ export const SessionScalarFieldEnum = {
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
-
-
-export const ProjectScalarFieldEnum = {
-  id: 'id',
-  title: 'title',
-  slug: 'slug',
-  description: 'description',
-  content: 'content',
-  imageUrl: 'imageUrl',
-  liveUrl: 'liveUrl',
-  githubUrl: 'githubUrl',
-  technologies: 'technologies',
-  featured: 'featured',
-  published: 'published',
-  noIndex: 'noIndex',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  authorId: 'authorId'
-} as const
-
-export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
 
 
 export const SiteSettingsScalarFieldEnum = {
@@ -183,8 +160,8 @@ export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
 export const NullableJsonNullValueInput = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull'
+  DbNull: DbNull,
+  JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
@@ -207,9 +184,9 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const JsonNullValueFilter = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull',
-  AnyNull: 'AnyNull'
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]

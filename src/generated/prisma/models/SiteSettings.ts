@@ -198,7 +198,7 @@ export type SiteSettingsGroupByOutputType = {
   _max: SiteSettingsMaxAggregateOutputType | null
 }
 
-type GetSiteSettingsGroupByPayload<T extends SiteSettingsGroupByArgs> = Prisma.PrismaPromise<
+export type GetSiteSettingsGroupByPayload<T extends SiteSettingsGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<SiteSettingsGroupByOutputType, T['by']> &
       {
@@ -415,6 +415,14 @@ export type SiteSettingsUncheckedUpdateManyInput = {
   knowsAbout?: Prisma.SiteSettingsUpdateknowsAboutInput | string[]
   technologySlugs?: Prisma.SiteSettingsUpdatetechnologySlugsInput | string[]
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type SiteSettingsCountOrderByAggregateInput = {
@@ -1181,6 +1189,11 @@ export type SiteSettingsFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Skip the first `n` SiteSettings.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of SiteSettings.
+   */
   distinct?: Prisma.SiteSettingsScalarFieldEnum | Prisma.SiteSettingsScalarFieldEnum[]
 }
 

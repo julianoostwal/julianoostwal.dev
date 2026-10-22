@@ -23,25 +23,19 @@ export default function ProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
-    fetchProfile();
+    fetch("/api/auth/profile", { credentials: "include" })
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to fetch profile");
+        return response.json();
+      })
+      .then((data: UserProfile) => {
+        setProfile(data);
+        setEmail(data.email);
+        setUsername(data.username);
+      })
+      .catch(() => toast.error("Failed to load profile"))
+      .finally(() => setLoading(false));
   }, []);
-
-  async function fetchProfile() {
-    try {
-      const response = await fetch("/api/auth/profile", {
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to fetch profile");
-      const data = await response.json();
-      setProfile(data);
-      setEmail(data.email);
-      setUsername(data.username);
-    } catch {
-      toast.error("Failed to load profile");
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function handleUpdateProfile(e: React.FormEvent) {
     e.preventDefault();

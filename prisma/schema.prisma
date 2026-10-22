@@ -20,7 +20,6 @@ model User {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   sessions     Session[]
-  projects     Project[]
 
   @@map("users")
 }
@@ -41,32 +40,6 @@ model Session {
   @@index([token])
   @@index([refreshToken])
   @@map("sessions")
-}
-
-model Project {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String?  @unique
-  description String?  @db.Text
-  content     String?  @db.Text
-  imageUrl    String?  @map("image_url")
-  liveUrl     String?  @map("live_url")
-  githubUrl   String?  @map("github_url")
-  technologies String[] @default([])
-  featured    Boolean  @default(false)
-  published   Boolean  @default(false)
-  noIndex     Boolean  @default(false) @map("no_index")
-  sortOrder   Int      @default(0) @map("sort_order")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  authorId    String   @map("author_id")
-
-  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  @@index([slug])
-  @@index([published])
-  @@index([featured])
-  @@map("projects")
 }
 
 model SiteSettings {

@@ -1,4 +1,4 @@
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -6,10 +6,10 @@ RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 # Install pnpm
-RUN corepack enable && corepack prepare pnpm@10.24.0 --activate
+RUN npm install -g pnpm@12.16.1
 
 # Copy package files
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY prisma ./prisma/
 
 # Install dependencies
@@ -19,7 +19,7 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@10.24.0 --activate
+RUN npm install -g pnpm@12.16.1
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

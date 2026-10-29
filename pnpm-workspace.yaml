@@ -1,8 +1,13 @@
-onlyBuiltDependencies:
-  - '@heroui/shared-utils'
-  - '@prisma/client'
-  - '@prisma/engines'
-  - esbuild
-  - prisma
-  - sharp
-  - unrs-resolver
+# pnpm 11+ replaced onlyBuiltDependencies with allowBuilds
+allowBuilds:
+  '@heroui/shared-utils': true
+  '@prisma/client': true
+  '@prisma/engines': true
+  esbuild: true
+  prisma: true
+  sharp: true
+  unrs-resolver: true
+
+# pnpm 11+ only reads auth/registry settings from .npmrc, so the HeroUI hoist pattern moved here
+publicHoistPattern:
+  - '*@heroui/*'
